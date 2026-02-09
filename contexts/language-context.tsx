@@ -917,6 +917,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (saved && (saved === "pl" || saved === "en")) {
       setLanguageState(saved)
       document.documentElement.lang = saved
+    } else {
+      // Detect browser language preference
+      const browserLang = navigator.language || navigator.languages?.[0] || "pl"
+      const detectedLang: Language = browserLang.startsWith("pl") ? "pl" : "en"
+      setLanguageState(detectedLang)
+      document.documentElement.lang = detectedLang
+      // Save to cookie for server-side rendering
+      document.cookie = `language=${detectedLang}; path=/; max-age=31536000; SameSite=Lax`
     }
   }, [])
 
