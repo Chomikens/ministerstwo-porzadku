@@ -346,7 +346,15 @@ export default function RootLayout({
     <html lang="pl" className={`${playfairDisplay.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-
+        <link
+          rel="preload"
+          as="image"
+          href="/images/design-mode/karolina-kalinowska-hero-intro.jpeg"
+          fetchPriority="high"
+          imageSrcSet="/images/design-mode/karolina-kalinowska-hero-intro.jpeg?w=640 640w, /images/design-mode/karolina-kalinowska-hero-intro.jpeg?w=750 750w, /images/design-mode/karolina-kalinowska-hero-intro.jpeg?w=828 828w"
+          imageSizes="(max-width: 768px) 100vw, 50vw"
+        />
+        <link rel="preload" as="image" href="/ministerstwo-porzadku-logo.png" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
