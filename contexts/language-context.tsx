@@ -35,8 +35,8 @@ const translations = {
 
     // Hero
     "hero.badge": "Profesjonalna organizacja przestrzeni",
-    "hero.tagline": "Spokój zaczyna się tu.",
-    "hero.title": "Spokój zaczyna się tu.",
+    "hero.tagline": "Twój spokój zaczyna się tutaj.",
+    "hero.title": "Twój spokój zaczyna się tutaj.",
     "hero.description.brand": "Ministerstwo Porządku",
     "hero.description.rest":
       "to więcej niż organizacja przestrzeni. To sposób na odzyskanie równowagi — w\u00A0domu, w\u00A0myślach, w\u00A0codzienności.",
