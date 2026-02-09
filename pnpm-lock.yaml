@@ -96,10 +96,10 @@ importers:
         specifier: 1.1.6
         version: 1.1.6(@types/react-dom@19.2.3(@types/react@19.2.13))(@types/react@19.2.13)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@react-email/render':
-        specifier: latest
-        version: 2.0.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: ^1.0.5
+        version: 1.4.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@sanity/client':
-        specifier: latest
+        specifier: ^7.3.0
         version: 7.14.1(debug@4.4.3)
       '@sanity/icons':
         specifier: 3.7.4
@@ -169,7 +169,7 @@ importers:
         version: 2.15.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       resend:
         specifier: 6.3.0
-        version: 6.3.0(@react-email/render@2.0.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1))
+        version: 6.3.0(@react-email/render@1.4.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1))
       sanity:
         specifier: 4.12.0
         version: 4.12.0(@emotion/is-prop-valid@1.4.0)(@portabletext/sanity-bridge@1.2.14(@types/react@19.2.13))(@types/node@22.19.10)(@types/react-dom@19.2.3(@types/react@19.2.13))(@types/react@19.2.13)(immer@10.2.0)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(styled-components@6.3.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(typescript@5.9.3)(yaml@2.8.2)
@@ -180,7 +180,7 @@ importers:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       styled-components:
-        specifier: latest
+        specifier: ^6.1.15
         version: 6.3.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       tailwind-merge:
         specifier: ^3.3.1
@@ -2528,9 +2528,9 @@ packages:
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
 
-  '@react-email/render@2.0.4':
-    resolution: {integrity: sha512-kht2oTFQ1SwrLpd882ahTvUtNa9s53CERHstiTbzhm6aR2Hbykp/mQ4tpPvsBGkKAEvKRlDEoooh60Uk6nHK1g==}
-    engines: {node: '>=20.0.0'}
+  '@react-email/render@1.4.0':
+    resolution: {integrity: sha512-ZtJ3noggIvW1ZAryoui95KJENKdCzLmN5F7hyZY1F/17B1vwzuxHB7YkuCg0QqHjDivc5axqYEYdIOw4JIQdUw==}
+    engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.0 || ^19.0 || ^19.0.0-rc
       react-dom: ^18.0 || ^19.0 || ^19.0.0-rc
@@ -4070,6 +4070,9 @@ packages:
   fast-content-type-parse@3.0.0:
     resolution: {integrity: sha512-ZvLdcY8P+N8mGQJahJV5G4U88CSvT1rP8ApL6uETe88MBXrBHAkZlSEySdUlyztF7ccb+Znos3TFqaepHxdhBg==}
 
+  fast-deep-equal@2.0.1:
+    resolution: {integrity: sha512-bCK/2Z4zLidyB4ReuIsvALH6w31YfAQDmXMqMx6FyfHqvBxtjC0eRumeSu4Bs3XtXwpyIywtSTrVT99BxY1f9w==}
+
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -5410,6 +5413,9 @@ packages:
 
   react-is@19.2.4:
     resolution: {integrity: sha512-W+EWGn2v0ApPKgKKCy/7s7WHXkboGcsrXE+2joLyVxkbyVQfO3MUEaUQDHoSmb8TFFrSKYa9mw64WZHNHSDzYA==}
+
+  react-promise-suspense@0.3.4:
+    resolution: {integrity: sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ==}
 
   react-refractor@4.0.0:
     resolution: {integrity: sha512-2VMRH3HA/Nu+tMFzyQwdBK0my0BIZy1pkWHhjuSrplMyf8ZLx/Gw7tUXV0t2JbEsbSNHbEc9TbHhq3sUx2seVA==}
@@ -8864,12 +8870,13 @@ snapshots:
 
   '@radix-ui/rect@1.1.0': {}
 
-  '@react-email/render@2.0.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@react-email/render@1.4.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       html-to-text: 9.0.5
       prettier: 3.8.1
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
+      react-promise-suspense: 0.3.4
 
   '@rexxars/react-json-inspector@9.0.1(react@19.2.1)':
     dependencies:
@@ -10654,6 +10661,8 @@ snapshots:
 
   fast-content-type-parse@3.0.0: {}
 
+  fast-deep-equal@2.0.1: {}
+
   fast-deep-equal@3.1.3: {}
 
   fast-equals@5.4.0: {}
@@ -11983,6 +11992,10 @@ snapshots:
 
   react-is@19.2.4: {}
 
+  react-promise-suspense@0.3.4:
+    dependencies:
+      fast-deep-equal: 2.0.1
+
   react-refractor@4.0.0(react@19.2.1):
     dependencies:
       react: 19.2.1
@@ -12165,11 +12178,11 @@ snapshots:
 
   reselect@5.1.1: {}
 
-  resend@6.3.0(@react-email/render@2.0.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)):
+  resend@6.3.0(@react-email/render@1.4.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)):
     dependencies:
       svix: 1.76.1
     optionalDependencies:
-      '@react-email/render': 2.0.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@react-email/render': 1.4.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   resolve-from@4.0.0: {}
 
