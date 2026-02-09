@@ -264,27 +264,27 @@
 
 .animate-fade-in-up {
   animation: fadeInUp 0.8s ease-out forwards;
-  /* Removed will-change to fix rendering issues */
+  opacity: 1 !important;
 }
 
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out forwards;
-  /* Removed will-change to fix rendering issues */
+  opacity: 1 !important;
 }
 
 .animate-scale-in {
   animation: scaleIn 0.6s ease-out forwards;
-  /* Removed will-change to fix rendering issues */
+  opacity: 1 !important;
 }
 
 .animate-slide-in-left {
   animation: slideInLeft 0.8s ease-out forwards;
-  /* Removed will-change to fix rendering issues */
+  opacity: 1 !important;
 }
 
 .animate-slide-in-right {
   animation: slideInRight 0.8s ease-out forwards;
-  /* Removed will-change to fix rendering issues */
+  opacity: 1 !important;
 }
 
 /* Stagger animation delays for sequential reveals */
