@@ -20,6 +20,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (saved && (saved === "light" || saved === "dark")) {
       setThemeState(saved)
       document.documentElement.classList.toggle("dark", saved === "dark")
+    } else {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+      const detected: Theme = prefersDark ? "dark" : "light"
+      setThemeState(detected)
+      document.documentElement.classList.toggle("dark", prefersDark)
     }
   }, [])
 
