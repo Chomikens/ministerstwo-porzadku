@@ -32,7 +32,7 @@ export function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative flex items-center justify-center pt-28 pb-16 lg:pt-32 lg:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
       aria-label="Hero section"
     >
       {/* Background decorative elements */}
@@ -45,9 +45,9 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column - Image */}
           <div className="observe-animation opacity-0 stagger-2 relative order-2 lg:order-1">
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl max-h-[500px] lg:max-h-[560px]">
               <Image
-                src="/images/design-mode/karolina-kalinowska-hero-intro.jpeg"
+                src="/images/design-mode/karolina-kalinowska-hero-intro.jpg"
                 alt="Karolina Kalinowska - Założycielka Ministerstwa Porządku"
                 fill
                 className="object-cover transition-smooth hover:scale-105"
