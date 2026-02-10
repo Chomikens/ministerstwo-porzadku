@@ -349,7 +349,7 @@ export function ChecklistBlock({ value }: any) {
             return (
               <li
                 key={index}
-                className={`group transition-all duration-300 ${isChecked ? "opacity-60" : "opacity-100"}`}
+                className="group transition-all duration-300"
               >
                 <button
                   onClick={() => toggleItem(index)}
@@ -377,8 +377,8 @@ export function ChecklistBlock({ value }: any) {
                   <span
                     className={`leading-relaxed flex-1 text-base transition-all duration-300 ${
                       isChecked
-                        ? "text-muted-foreground line-through"
-                        : "text-foreground font-medium group-hover:text-accent"
+                        ? "text-accent font-bold"
+                        : "text-foreground group-hover:text-accent"
                     }`}
                   >
                     {item}
