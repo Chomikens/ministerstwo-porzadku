@@ -64,9 +64,8 @@ export async function getAllPosts(language = "pl"): Promise<BlogPost[]> {
   }`
 
   const posts = await client.fetch<BlogPost[]>(query, { language })
-  const filteredPosts = posts.filter((post) => post.language === language)
 
-  return filteredPosts.map((post) => ({
+  return posts.map((post) => ({
     ...post,
     readingTime: calculateReadingTime(JSON.stringify(post.body)),
   }))
