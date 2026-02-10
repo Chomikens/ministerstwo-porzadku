@@ -184,12 +184,22 @@ export default async function ServicePage({
           },
         },
         serviceType: seo.serviceType,
-        offers: {
-          "@type": "Offer",
-          priceCurrency: "PLN",
-          availability: "https://schema.org/InStock",
-          url: canonicalUrl,
-        },
+        offers:
+          slug === "konsultacja-online"
+            ? {
+                "@type": "Offer",
+                price: "1500",
+                priceCurrency: "PLN",
+                availability: "https://schema.org/InStock",
+                url: canonicalUrl,
+              }
+            : {
+                "@type": "Offer",
+                priceCurrency: "PLN",
+                availability: "https://schema.org/InStock",
+                url: canonicalUrl,
+                description: "Wycena indywidualna",
+              },
       },
       {
         "@type": "BreadcrumbList",
