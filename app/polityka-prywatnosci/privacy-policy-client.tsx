@@ -1,8 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/contexts/language-context"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 
 export function PrivacyPolicyClient() {
   const { t, language } = useLanguage()
@@ -10,15 +9,16 @@ export function PrivacyPolicyClient() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-primary text-primary-foreground py-16 px-4">
+      <div className="bg-primary text-primary-foreground pt-28 pb-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-primary-foreground/90 hover:text-accent transition-smooth mb-6"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {t("privacy.backToHome")}
-          </Link>
+          <div className="mb-6">
+            <Breadcrumbs
+              items={[
+                { label: t("breadcrumbs.privacyPolicy") },
+              ]}
+              variant="light"
+            />
+          </div>
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">{t("privacy.title")}</h1>
           <p className="text-primary-foreground/90 text-lg">{t("privacy.lastUpdated")}: 3 listopada 2025</p>
         </div>

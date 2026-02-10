@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Check, ArrowRight, ArrowLeft, Home, Briefcase, Package, Sparkles } from "lucide-react"
+import { Check, ArrowRight, Home, Briefcase, Package, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useRouter } from "next/navigation"
 import type { ServiceData, ServiceIconName } from "@/lib/services-data"
-import Link from "next/link"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 
 const iconMap: Record<ServiceIconName, typeof Home> = {
   Home,
@@ -54,15 +54,14 @@ export function ServiceDetail({ service }: { service: ServiceData }) {
   return (
     <div ref={sectionRef} className="min-h-screen bg-background">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        {/* Back button */}
+        {/* Breadcrumbs */}
         <div className="mb-8 observe-animation opacity-0">
-          <Link
-            href="/#uslugi"
-            className="inline-flex items-center gap-2 text-foreground/70 hover:text-accent transition-smooth group"
-          >
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            <span className="font-medium">{t("services.title")}</span>
-          </Link>
+          <Breadcrumbs
+            items={[
+              { label: t("breadcrumbs.services"), href: "/#uslugi" },
+              { label: t(service.titleKey) },
+            ]}
+          />
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">

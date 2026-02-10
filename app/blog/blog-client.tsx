@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { BlogCard } from "@/components/blog/blog-card"
 import { Search, X } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { BlogPost, Category } from "@/lib/sanity.queries"
 import { useState, useMemo, useRef, useEffect } from "react"
 
@@ -69,7 +70,7 @@ export default function BlogPageClient({ posts, categories }: BlogPageClientProp
     <>
       <Navigation />
       <main className="min-h-screen bg-background">
-        <section className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-secondary/30 overflow-hidden">
+        <section className="relative pt-28 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8 bg-secondary/30 overflow-hidden">
           {/* Decorative background pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-3xl" />
@@ -77,6 +78,13 @@ export default function BlogPageClient({ posts, categories }: BlogPageClientProp
           </div>
 
           <div className="container mx-auto max-w-7xl relative">
+            <div className="mb-8">
+              <Breadcrumbs
+                items={[
+                  { label: t("breadcrumbs.blog") },
+                ]}
+              />
+            </div>
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left: Text Content */}
               <div className="space-y-6 animate-fade-in-up">
