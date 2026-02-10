@@ -80,6 +80,7 @@ export function Navigation() {
     { href: isHomePage ? "#uslugi" : "/#uslugi", label: t("nav.services") },
     { href: isHomePage ? "#transformacje" : "/#transformacje", label: t("nav.transformations") },
     { href: isHomePage ? "#kontakt" : "/#kontakt", label: t("nav.contact") },
+    { href: "/blog", label: t("blog.title"), isPage: true },
   ]
 
   return (
