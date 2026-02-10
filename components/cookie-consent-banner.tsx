@@ -12,8 +12,17 @@ export function CookieConsentBanner() {
   const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
-    // Show banner if user hasn't made a choice
-    setShowBanner(!hasConsent())
+    // Delay banner display so it doesn't become the LCP element
+    const show = () => {
+      if (!hasConsent()) setShowBanner(true)
+    }
+    if (typeof requestIdleCallback !== "undefined") {
+      const id = requestIdleCallback(show, { timeout: 3000 })
+      return () => cancelIdleCallback(id)
+    } else {
+      const id = setTimeout(show, 2000)
+      return () => clearTimeout(id)
+    }
   }, [])
 
   const handleAcceptAll = () => {

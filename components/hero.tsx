@@ -50,7 +50,7 @@ export function Hero() {
                 src="/images/design-mode/karolina-kalinowska-hero-intro.jpg"
                 alt="Karolina Kalinowska - Założycielka Ministerstwa Porządku"
                 fill
-                className="object-cover transition-smooth hover:scale-105"
+                className="object-cover transition-transform duration-500 ease-in-out hover:scale-105"
                 priority
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 50vw, 600px"
                 quality={75}
