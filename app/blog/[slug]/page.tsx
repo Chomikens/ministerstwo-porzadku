@@ -16,6 +16,7 @@ import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/sanity.querie
 import { urlFor } from "@/lib/sanity"
 import { getLanguage } from "@/lib/get-language"
 import { Contact } from "@/components/contact"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 
 export const revalidate = 60
 
@@ -146,6 +147,16 @@ async function BlogPostContent({ slug }: { slug: string }) {
           <div className="relative bg-gradient-to-b from-accent/5 via-background to-background overflow-hidden">
             {/* Increased pt-8 to pt-28 to account for fixed navigation header height */}
             <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 pb-4">
+              {/* Breadcrumbs */}
+              <div className="mb-8">
+                <Breadcrumbs
+                  items={[
+                    { label: "Blog", href: "/blog" },
+                    { label: post.category.title, href: `/blog/kategoria/${post.category.slug}` },
+                    { label: post.title },
+                  ]}
+                />
+              </div>
               {/* Hero grid layout - side by side on desktop, stacked on mobile */}
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* Left side - Content */}

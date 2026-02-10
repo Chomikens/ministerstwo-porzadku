@@ -24,6 +24,14 @@ const translations = {
     "nav.contact": "Kontakt",
     "nav.cta": "Umów konsultację",
 
+    // Breadcrumbs
+    "breadcrumbs.home": "Strona g\u0142\u00F3wna",
+    "breadcrumbs.label": "Nawigacja okruszkowa",
+    "breadcrumbs.services": "Us\u0142ugi",
+    "breadcrumbs.blog": "Blog",
+    "breadcrumbs.category": "Kategoria",
+    "breadcrumbs.privacyPolicy": "Polityka Prywatno\u015Bci",
+
     // 404 Page
     "notFound.code": "404",
     "notFound.title": "Strona nie została znaleziona",
@@ -475,6 +483,14 @@ const translations = {
     "nav.ebooks": "Ebooks", // Added ebooks navigation translation
     "nav.contact": "Contact",
     "nav.cta": "Book Consultation",
+
+    // Breadcrumbs
+    "breadcrumbs.home": "Home",
+    "breadcrumbs.label": "Breadcrumb navigation",
+    "breadcrumbs.services": "Services",
+    "breadcrumbs.blog": "Blog",
+    "breadcrumbs.category": "Category",
+    "breadcrumbs.privacyPolicy": "Privacy Policy",
 
     // 404 Page
     "notFound.code": "404",

@@ -8,6 +8,7 @@ import { Footer } from "@/components/footer"
 import { BlogCard } from "@/components/blog/blog-card"
 import { getPostsByCategory, getCategoryBySlug, getAllCategories } from "@/lib/sanity.queries"
 import { getLanguage } from "@/lib/get-language"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 
 export const revalidate = 60
 
@@ -77,15 +78,16 @@ async function CategoryContent({ categorySlug }: { categorySlug: string }) {
   return (
     <>
       {/* Hero Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-secondary/30">
+      <section className="pt-28 pb-12 px-4 sm:px-6 lg:px-8 bg-secondary/30">
         <div className="container mx-auto max-w-7xl">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors mb-6"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Powrót do bloga</span>
-          </Link>
+          <div className="mb-8">
+            <Breadcrumbs
+              items={[
+                { label: "Blog", href: "/blog" },
+                { label: category.title },
+              ]}
+            />
+          </div>
           <h1 className="font-serif text-5xl md:text-6xl font-bold text-foreground mb-6 animate-fade-in-up">
             {category.title}
           </h1>
