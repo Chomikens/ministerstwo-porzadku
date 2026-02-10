@@ -53,7 +53,7 @@ export function Hero() {
                 className="object-cover transition-smooth hover:scale-105"
                 priority
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 50vw, 600px"
-                quality={80}
+                quality={75}
                 loading="eager"
                 fetchPriority="high"
                 placeholder="blur"
