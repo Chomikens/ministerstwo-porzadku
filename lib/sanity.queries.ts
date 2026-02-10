@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { client } from "./sanity"
 import { calculateReadingTime } from "./reading-time"
 
@@ -63,15 +64,14 @@ export async function getAllPosts(language = "pl"): Promise<BlogPost[]> {
   }`
 
   const posts = await client.fetch<BlogPost[]>(query, { language })
-  const filteredPosts = posts.filter((post) => post.language === language)
 
-  return filteredPosts.map((post) => ({
+  return posts.map((post) => ({
     ...post,
     readingTime: calculateReadingTime(JSON.stringify(post.body)),
   }))
 }
 
-export async function getPostBySlug(slug: string, language = "pl"): Promise<BlogPost | null> {
+export const getPostBySlug = cache(async function getPostBySlug(slug: string, language = "pl"): Promise<BlogPost | null> {
   const query = `*[_type == "blogPost" && slug.current == $slug && language == $language][0] {
     _id,
     title,
@@ -106,7 +106,7 @@ export async function getPostBySlug(slug: string, language = "pl"): Promise<Blog
     ...post,
     readingTime: calculateReadingTime(JSON.stringify(post.body)),
   }
-}
+})
 
 export async function getPostsByCategory(categorySlug: string, language = "pl"): Promise<BlogPost[]> {
   const query = `*[_type == "blogPost" && category->slug.current == $categorySlug && language == $language] | order(publishedAt desc) {

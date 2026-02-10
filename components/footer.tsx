@@ -30,18 +30,8 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="#proces" className="text-primary-foreground/95 hover:text-accent transition-smooth">
-                    {t("nav.process")}
-                  </a>
-                </li>
-                <li>
                   <a href="#transformacje" className="text-primary-foreground/95 hover:text-accent transition-smooth">
                     {t("nav.transformations")}
-                  </a>
-                </li>
-                <li>
-                  <a href="#opinie" className="text-primary-foreground/95 hover:text-accent transition-smooth">
-                    {t("nav.testimonials")}
                   </a>
                 </li>
                 <li>

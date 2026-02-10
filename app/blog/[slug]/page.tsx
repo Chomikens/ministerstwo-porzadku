@@ -88,10 +88,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
     const language = await getLanguage()
     const post = await getPostBySlug(slug, language)
 
-    console.log("[v0] Post data:", { slug, language, hasPost: !!post })
-
     if (!post) {
-      console.log("[v0] Post not found")
       notFound()
     }
 
