@@ -167,8 +167,18 @@ async function BlogPostContent({ slug }: { slug: string }) {
                   {/* Author and date info */}
                   <div className="flex flex-wrap items-center gap-6 text-sm pt-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-                        <User className="w-6 h-6 text-white" />
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        {post.author.image ? (
+                          <Image
+                            src={urlFor(post.author.image).width(96).height(96).url()}
+                            alt={post.author.name}
+                            width={48}
+                            height={48}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <User className="w-6 h-6 text-white" />
+                        )}
                       </div>
                       <div>
                         <p className="font-semibold text-foreground">{post.author.name}</p>
