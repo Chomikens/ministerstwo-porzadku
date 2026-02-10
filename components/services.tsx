@@ -3,10 +3,17 @@
 import type React from "react"
 
 import { useEffect, useRef, useState } from "react"
-import { Sparkles, ArrowRight } from "lucide-react"
+import { Sparkles, ArrowRight, Home, Briefcase, Package } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
-import { services as servicesData } from "@/lib/services-data"
+import { services as servicesData, type ServiceIconName } from "@/lib/services-data"
 import Link from "next/link"
+
+const iconMap: Record<ServiceIconName, typeof Home> = {
+  Home,
+  Briefcase,
+  Package,
+  Sparkles,
+}
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -55,7 +62,8 @@ export function Services() {
     return () => observer.disconnect()
   }, [language])
 
-  const ServiceIcon = ({ icon: Icon }: { icon: React.ElementType }) => {
+  const ServiceIcon = ({ iconName }: { iconName: ServiceIconName }) => {
+    const Icon = iconMap[iconName]
     return <Icon className="w-4 h-4" />
   }
 
@@ -122,7 +130,7 @@ export function Services() {
                       {service.badge}
                     </div>
                     <div className="w-12 h-12 rounded-full bg-card/20 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-accent/90">
-                      <ServiceIcon icon={service.icon} />
+                      <ServiceIcon iconName={service.iconName} />
                     </div>
                   </div>
 

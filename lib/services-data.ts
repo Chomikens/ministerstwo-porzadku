@@ -1,8 +1,8 @@
-import { Home, Briefcase, Package, Sparkles } from "lucide-react"
+export type ServiceIconName = "Home" | "Briefcase" | "Package" | "Sparkles"
 
 export interface ServiceData {
   slug: string
-  icon: typeof Home
+  iconName: ServiceIconName
   badgeKey: string
   titleKey: string
   descriptionKey: string
@@ -17,7 +17,7 @@ export interface ServiceData {
 export const services: ServiceData[] = [
   {
     slug: "projektowa-organizacja-przestrzeni",
-    icon: Home,
+    iconName: "Home",
     badgeKey: "services.home.badge",
     titleKey: "services.home.title",
     descriptionKey: "services.home.description",
@@ -34,7 +34,7 @@ export const services: ServiceData[] = [
   },
   {
     slug: "decluttering-i-organizacja-przestrzeni",
-    icon: Briefcase,
+    iconName: "Briefcase",
     badgeKey: "services.office.badge",
     titleKey: "services.office.title",
     descriptionKey: "services.office.description",
@@ -53,7 +53,7 @@ export const services: ServiceData[] = [
   },
   {
     slug: "wsparcie-w-przeprowadzce",
-    icon: Package,
+    iconName: "Package",
     badgeKey: "services.moving.badge",
     titleKey: "services.moving.title",
     descriptionKey: "services.moving.description",
@@ -71,7 +71,7 @@ export const services: ServiceData[] = [
   },
   {
     slug: "konsultacja-online",
-    icon: Sparkles,
+    iconName: "Sparkles",
     badgeKey: "services.online.badge",
     titleKey: "services.online.title",
     descriptionKey: "services.online.description",

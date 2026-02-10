@@ -1,15 +1,22 @@
 "use client"
 
-import type React from "react"
 import { useEffect, useRef } from "react"
-import { Check, ArrowRight, ArrowLeft } from "lucide-react"
+import { Check, ArrowRight, ArrowLeft, Home, Briefcase, Package, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useRouter } from "next/navigation"
-import type { ServiceData } from "@/lib/services-data"
+import type { ServiceData, ServiceIconName } from "@/lib/services-data"
 import Link from "next/link"
 
-function ServiceIcon({ icon: Icon }: { icon: React.ElementType }) {
+const iconMap: Record<ServiceIconName, typeof Home> = {
+  Home,
+  Briefcase,
+  Package,
+  Sparkles,
+}
+
+function ServiceIcon({ iconName }: { iconName: ServiceIconName }) {
+  const Icon = iconMap[iconName]
   return <Icon className="w-4 h-4" />
 }
 
@@ -62,7 +69,7 @@ export function ServiceDetail({ service }: { service: ServiceData }) {
           {/* Left column - Image, price, CTA */}
           <div className="lg:col-span-5 space-y-6">
             <div className="observe-animation opacity-0 inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full text-sm font-medium text-accent">
-              <ServiceIcon icon={service.icon} />
+              <ServiceIcon iconName={service.iconName} />
               {t(service.badgeKey)}
             </div>
 
