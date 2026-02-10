@@ -67,10 +67,26 @@ export function Footer() {
             <div className="space-y-4">
               <h4 className="font-semibold text-lg">{t("nav.services")}</h4>
               <ul className="space-y-2 text-sm">
-                <li className="text-primary-foreground/95">{t("services.home.title")}</li>
-                <li className="text-primary-foreground/95">{t("services.office.title")}</li>
-                <li className="text-primary-foreground/95">{t("services.moving.title")}</li>
-                <li className="text-primary-foreground/95">{t("services.online.title")}</li>
+                <li>
+                  <a href="/uslugi/projektowa-organizacja-przestrzeni" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                    {t("services.home.title")}
+                  </a>
+                </li>
+                <li>
+                  <a href="/uslugi/decluttering-i-organizacja-przestrzeni" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                    {t("services.office.title")}
+                  </a>
+                </li>
+                <li>
+                  <a href="/uslugi/wsparcie-w-przeprowadzce" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                    {t("services.moving.title")}
+                  </a>
+                </li>
+                <li>
+                  <a href="/uslugi/konsultacja-online" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                    {t("services.online.title")}
+                  </a>
+                </li>
               </ul>
             </div>
 

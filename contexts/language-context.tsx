@@ -81,6 +81,7 @@ const translations = {
     "services.starting": "Cena od",
     "services.book": "Umów konsultację",
     "services.details": "Szczegóły usługi",
+    "services.forWhom": "Dla kogo",
 
     "services.home.badge": "Najpopularniejsze",
     "services.home.title": "Projektowa organizacja przestrzeni",
@@ -302,7 +303,7 @@ const translations = {
     "contact.form.room.option12": "Inne",
     "contact.form.goal": "Opisz swój cel",
     "contact.form.step3.title": "Dodatkowe informacje",
-    "contact.form.step3.description": "Pomóż mi lepiej przygotować się do konsultacji",
+    "contact.form.step3.description": "Pomóż mi lepiej przygotować si�� do konsultacji",
     "contact.form.preferredDate": "Preferowany termin konsultacji",
     "contact.form.additionalQuestions": "Dodatkowe pytania lub uwagi",
     "contact.form.additionalQuestions.placeholder": "Opisz szczegółowo swoją sytuację...",
@@ -531,6 +532,7 @@ const translations = {
     "services.starting": "Starting from",
     "services.book": "Book Consultation",
     "services.details": "Service Details",
+    "services.forWhom": "Who is it for",
 
     "services.home.badge": "Most Popular",
     "services.home.title": "Project-Based Space Organization",
