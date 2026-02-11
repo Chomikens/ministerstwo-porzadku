@@ -4,7 +4,9 @@ import { useEffect, useRef } from "react"
 import { ArrowRight, HelpCircle, Clock, Wallet, Sparkles, Home, Package } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { getFaqBySlug, getRelatedFaq, type FaqCategory } from "@/lib/faq-data"
+import type { SanityFaqQuestion } from "@/lib/sanity.faq-queries"
 import { Breadcrumbs } from "@/components/breadcrumbs"
+import { BlogContent } from "@/components/blog/blog-content"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
@@ -17,12 +19,20 @@ const iconMap: Record<FaqCategory["iconName"], typeof HelpCircle> = {
   Package,
 }
 
-export function FaqQuestionClient({ slug }: { slug: string }) {
+interface FaqQuestionClientProps {
+  slug: string
+  sanityQuestion?: SanityFaqQuestion | null
+  sanityRelated?: SanityFaqQuestion[] | null
+}
+
+export function FaqQuestionClient({ slug, sanityQuestion, sanityRelated }: FaqQuestionClientProps) {
   const { t } = useLanguage()
   const sectionRef = useRef<HTMLDivElement>(null)
 
-  const result = getFaqBySlug(slug)
-  const related = result ? getRelatedFaq(slug, result.category.id, 3) : []
+  // Determine data source
+  const useSanity = !!sanityQuestion
+  const staticResult = !useSanity ? getFaqBySlug(slug) : null
+  const staticRelated = staticResult ? getRelatedFaq(slug, staticResult.category.id, 3) : []
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -46,10 +56,30 @@ export function FaqQuestionClient({ slug }: { slug: string }) {
     return () => observer.disconnect()
   }, [])
 
-  if (!result) return null
+  if (!useSanity && !staticResult) return null
 
-  const { item, category } = result
-  const CategoryIcon = iconMap[category.iconName]
+  // Normalize data for rendering
+  const question = useSanity ? sanityQuestion!.question : t(staticResult!.item.questionKey)
+  const categoryName = useSanity ? sanityQuestion!.category.title : t(staticResult!.category.labelKey)
+  const categoryIcon = useSanity ? (sanityQuestion!.category.icon as FaqCategory["iconName"]) : staticResult!.category.iconName
+  const CategoryIcon = iconMap[categoryIcon] || HelpCircle
+
+  const hasRichAnswer = useSanity && sanityQuestion!.answer && sanityQuestion!.answer.length > 0
+  const plainAnswer = useSanity ? sanityQuestion!.shortAnswer : t(staticResult!.item.answerKey)
+
+  const relatedItems = useSanity && sanityRelated
+    ? sanityRelated.map((q) => ({
+        slug: q.slug,
+        question: q.question,
+        categoryName: q.category.title,
+        categoryIcon: (q.category.icon as FaqCategory["iconName"]) || "HelpCircle",
+      }))
+    : staticRelated.map((r) => ({
+        slug: r.item.slug,
+        question: t(r.item.questionKey),
+        categoryName: t(r.category.labelKey),
+        categoryIcon: r.category.iconName,
+      }))
 
   return (
     <div ref={sectionRef} className="min-h-screen bg-background">
@@ -67,8 +97,8 @@ export function FaqQuestionClient({ slug }: { slug: string }) {
             <Breadcrumbs
               items={[
                 { label: t("faq.page.title"), href: "/faq" },
-                { label: t(category.labelKey) },
-                { label: t(item.questionKey) },
+                { label: categoryName },
+                { label: question },
               ]}
             />
           </div>
@@ -77,14 +107,14 @@ export function FaqQuestionClient({ slug }: { slug: string }) {
           <div className="observe-animation opacity-0">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full text-sm font-medium text-accent mb-6">
               <CategoryIcon className="w-4 h-4" aria-hidden="true" />
-              {t(category.labelKey)}
+              {categoryName}
             </div>
           </div>
 
           {/* Question as H1 */}
           <div className="observe-animation opacity-0 stagger-1">
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground text-balance leading-tight">
-              {t(item.questionKey)}
+              {question}
             </h1>
           </div>
         </div>
@@ -98,9 +128,13 @@ export function FaqQuestionClient({ slug }: { slug: string }) {
             <div className="lg:col-span-8">
               <div className="observe-animation opacity-0 stagger-2">
                 <div className="p-8 sm:p-10 bg-card rounded-2xl border border-border shadow-sm">
-                  <p className="text-lg sm:text-xl text-foreground/80 leading-relaxed whitespace-pre-line">
-                    {t(item.answerKey)}
-                  </p>
+                  {hasRichAnswer ? (
+                    <BlogContent content={sanityQuestion!.answer} />
+                  ) : (
+                    <p className="text-lg sm:text-xl text-foreground/80 leading-relaxed whitespace-pre-line">
+                      {plainAnswer}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -129,12 +163,12 @@ export function FaqQuestionClient({ slug }: { slug: string }) {
                     {t("faq.question.related")}
                   </h2>
                   <div className="space-y-3">
-                    {related.map((rel) => {
-                      const RelIcon = iconMap[rel.category.iconName]
+                    {relatedItems.map((rel) => {
+                      const RelIcon = iconMap[rel.categoryIcon] || HelpCircle
                       return (
                         <Link
-                          key={rel.item.slug}
-                          href={`/faq/${rel.item.slug}`}
+                          key={rel.slug}
+                          href={`/faq/${rel.slug}`}
                           className="group block p-4 bg-card rounded-xl border border-border hover:border-accent/50 transition-all duration-300 hover:shadow-sm"
                         >
                           <div className="flex items-start gap-3">
@@ -143,10 +177,10 @@ export function FaqQuestionClient({ slug }: { slug: string }) {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors leading-snug text-pretty">
-                                {t(rel.item.questionKey)}
+                                {rel.question}
                               </p>
                               <span className="text-xs text-muted-foreground mt-1 block">
-                                {t(rel.category.labelKey)}
+                                {rel.categoryName}
                               </span>
                             </div>
                           </div>

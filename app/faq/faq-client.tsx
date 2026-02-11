@@ -4,11 +4,12 @@ import { useState, useRef, useEffect, useMemo } from "react"
 import { Search, X, HelpCircle, Clock, Wallet, Sparkles, Home, Package, ArrowRight, LayoutGrid } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { faqCategories, type FaqCategory } from "@/lib/faq-data"
+import type { SanityFaqCategory, SanityFaqQuestion } from "@/lib/sanity.faq-queries"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-const iconMap: Record<FaqCategory["iconName"], typeof HelpCircle> = {
+const iconMap: Record<string, typeof HelpCircle> = {
   HelpCircle,
   Clock,
   Wallet,
@@ -17,41 +18,51 @@ const iconMap: Record<FaqCategory["iconName"], typeof HelpCircle> = {
   Package,
 }
 
-// Bento card size patterns per category - creates visual variety
-const bentoPatterns: Record<string, string[]> = {
-  general: ["lg:col-span-2 lg:row-span-2", "lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-1"],
-  process: ["lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-1", "lg:col-span-2 lg:row-span-1"],
-  pricing: ["lg:col-span-1 lg:row-span-2", "lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-1"],
-  services: ["lg:col-span-1 lg:row-span-1", "lg:col-span-2 lg:row-span-1", "lg:col-span-1 lg:row-span-1"],
-  practical: ["lg:col-span-2 lg:row-span-1", "lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-2"],
+// Bento card size patterns per category index
+const bentoPatternsList = [
+  ["lg:col-span-2 lg:row-span-2", "lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-1"],
+  ["lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-1", "lg:col-span-2 lg:row-span-1"],
+  ["lg:col-span-1 lg:row-span-2", "lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-1"],
+  ["lg:col-span-1 lg:row-span-1", "lg:col-span-2 lg:row-span-1", "lg:col-span-1 lg:row-span-1"],
+  ["lg:col-span-2 lg:row-span-1", "lg:col-span-1 lg:row-span-1", "lg:col-span-1 lg:row-span-2"],
+]
+
+// Normalized item for rendering
+interface NormalizedItem {
+  slug: string
+  question: string
+  shortAnswer: string
+  categoryId: string
+  categoryLabel: string
+  categoryIcon: string
+}
+
+interface NormalizedGroup {
+  id: string
+  label: string
+  icon: string
+  items: NormalizedItem[]
 }
 
 function BentoQuestionCard({
-  question,
-  answer,
-  slug,
+  item,
   bentoClass,
-  categoryIcon: CategoryIcon,
-  categoryLabel,
   delay,
 }: {
-  question: string
-  answer: string
-  slug: string
+  item: NormalizedItem
   bentoClass: string
-  categoryIcon: typeof HelpCircle
-  categoryLabel: string
   delay: number
 }) {
   const isLarge = bentoClass.includes("col-span-2") || bentoClass.includes("row-span-2")
+  const Icon = iconMap[item.categoryIcon] || HelpCircle
 
   return (
     <Link
-      href={`/faq/${slug}`}
+      href={`/faq/${item.slug}`}
       className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-card p-6 lg:p-8 transition-all duration-500 hover:shadow-xl hover:border-accent/30 hover:-translate-y-1 ${bentoClass}`}
       style={{ animationDelay: `${delay}ms` }}
     >
-      {/* Decorative corner element -- like an organizing label/tab */}
+      {/* Decorative corner */}
       <div className="absolute top-0 right-0 w-20 h-20 -z-0" aria-hidden="true">
         <div className="absolute top-0 right-0 w-full h-full bg-accent/5 rounded-bl-[3rem] transition-all duration-500 group-hover:bg-accent/10" />
       </div>
@@ -60,26 +71,26 @@ function BentoQuestionCard({
         {/* Category tag */}
         <div className="flex items-center gap-2 mb-4">
           <div className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-accent/20">
-            <CategoryIcon className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
+            <Icon className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
           </div>
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-            {categoryLabel}
+            {item.categoryLabel}
           </span>
         </div>
 
         {/* Question */}
         <h3 className={`font-serif font-bold text-foreground leading-snug text-pretty group-hover:text-accent transition-colors duration-300 mb-3 ${isLarge ? "text-xl lg:text-2xl" : "text-lg"}`}>
-          {question}
+          {item.question}
         </h3>
 
         {/* Answer preview */}
         <p className={`text-muted-foreground leading-relaxed flex-1 ${isLarge ? "text-base line-clamp-4" : "text-sm line-clamp-2"}`}>
-          {answer}
+          {item.shortAnswer}
         </p>
 
         {/* Read more */}
         <div className="flex items-center gap-2 mt-4 text-sm font-medium text-accent opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-          <span>{isLarge ? "Czytaj odpowiedź" : "Czytaj"}</span>
+          <span>{isLarge ? "Czytaj odpowied\u017A" : "Czytaj"}</span>
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
         </div>
       </div>
@@ -90,7 +101,14 @@ function BentoQuestionCard({
   )
 }
 
-export function FaqClient() {
+interface FaqClientProps {
+  sanityGroups?: {
+    category: SanityFaqCategory
+    questions: SanityFaqQuestion[]
+  }[] | null
+}
+
+export function FaqClient({ sanityGroups }: FaqClientProps) {
   const { t } = useLanguage()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
@@ -109,42 +127,65 @@ export function FaqClient() {
     return () => observer.disconnect()
   }, [])
 
-  const filteredCategories = useMemo(() => {
+  // Normalize data from either Sanity or static
+  const groups: NormalizedGroup[] = useMemo(() => {
+    if (sanityGroups && sanityGroups.length > 0) {
+      return sanityGroups.map((g) => ({
+        id: g.category.slug,
+        label: g.category.title,
+        icon: g.category.icon || "HelpCircle",
+        items: g.questions.map((q) => ({
+          slug: q.slug,
+          question: q.question,
+          shortAnswer: q.shortAnswer,
+          categoryId: g.category.slug,
+          categoryLabel: g.category.title,
+          categoryIcon: g.category.icon || "HelpCircle",
+        })),
+      }))
+    }
+
+    // Fall back to static data
+    return faqCategories.map((c) => ({
+      id: c.id,
+      label: t(c.labelKey),
+      icon: c.iconName,
+      items: c.items.map((item) => ({
+        slug: item.slug,
+        question: t(item.questionKey),
+        shortAnswer: t(item.answerKey),
+        categoryId: c.id,
+        categoryLabel: t(c.labelKey),
+        categoryIcon: c.iconName,
+      })),
+    }))
+  }, [sanityGroups, t])
+
+  const filteredGroups = useMemo(() => {
     if (!searchQuery.trim()) {
-      if (activeCategory === null) return faqCategories
-      return faqCategories.filter((c) => c.id === activeCategory)
+      if (activeCategory === null) return groups
+      return groups.filter((g) => g.id === activeCategory)
     }
 
     const query = searchQuery.toLowerCase()
-    return faqCategories
-      .map((category) => ({
-        ...category,
-        items: category.items.filter(
+    return groups
+      .map((group) => ({
+        ...group,
+        items: group.items.filter(
           (item) =>
-            t(item.questionKey).toLowerCase().includes(query) ||
-            t(item.answerKey).toLowerCase().includes(query)
+            item.question.toLowerCase().includes(query) ||
+            item.shortAnswer.toLowerCase().includes(query)
         ),
       }))
-      .filter((category) => category.items.length > 0)
-  }, [searchQuery, activeCategory, t])
+      .filter((group) => group.items.length > 0)
+  }, [searchQuery, activeCategory, groups])
 
-  const totalResults = filteredCategories.reduce((sum, c) => sum + c.items.length, 0)
-
-  // Flatten items for "all" view bento grid
-  const allItems = useMemo(() => {
-    return filteredCategories.flatMap((category) =>
-      category.items.map((item) => ({
-        ...item,
-        category,
-      }))
-    )
-  }, [filteredCategories])
+  const totalResults = filteredGroups.reduce((sum, g) => sum + g.items.length, 0)
 
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 px-4 sm:px-6 lg:px-8 bg-secondary/30 overflow-hidden">
-        {/* Decorative elements */}
         <div className="absolute inset-0 -z-10" aria-hidden="true">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 left-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
@@ -208,20 +249,20 @@ export function FaqClient() {
               <LayoutGrid className="w-3.5 h-3.5" aria-hidden="true" />
               {t("faq.page.all")}
             </button>
-            {faqCategories.map((category) => {
-              const Icon = iconMap[category.iconName]
+            {groups.map((group) => {
+              const Icon = iconMap[group.icon] || HelpCircle
               return (
                 <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
+                  key={group.id}
+                  onClick={() => setActiveCategory(group.id)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                    activeCategory === category.id
+                    activeCategory === group.id
                       ? "bg-accent text-accent-foreground shadow-sm"
                       : "bg-card border border-border/60 text-muted-foreground hover:border-accent/30 hover:text-foreground"
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" aria-hidden="true" />
-                  {t(category.labelKey)}
+                  {group.label}
                 </button>
               )
             })}
@@ -239,83 +280,38 @@ export function FaqClient() {
               </div>
               <p className="text-muted-foreground text-lg">{t("faq.page.no.results")}</p>
             </div>
-          ) : activeCategory === null && !searchQuery ? (
-            // All categories view -- each category as a "shelf" section with bento cards
+          ) : (
             <div className={`space-y-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-              {filteredCategories.map((category, catIndex) => {
-                const Icon = iconMap[category.iconName]
-                const patterns = bentoPatterns[category.id] || bentoPatterns.general
+              {filteredGroups.map((group, catIndex) => {
+                const Icon = iconMap[group.icon] || HelpCircle
+                const patterns = bentoPatternsList[catIndex % bentoPatternsList.length]
 
                 return (
-                  <div key={category.id}>
-                    {/* Category "shelf" header */}
+                  <div key={group.id}>
+                    {/* Category header */}
                     <div className="flex items-center gap-4 mb-6">
                       <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                         <Icon className="w-5 h-5 text-accent" aria-hidden="true" />
                       </div>
                       <div>
                         <h2 className="font-serif text-2xl font-bold text-foreground">
-                          {t(category.labelKey)}
+                          {group.label}
                         </h2>
                       </div>
                       <div className="flex-1 h-px bg-border/40" aria-hidden="true" />
                       <span className="text-sm text-muted-foreground font-medium">
-                        {category.items.length} {category.items.length === 1 ? "pytanie" : category.items.length < 5 ? "pytania" : "pytań"}
+                        {group.items.length} {group.items.length === 1 ? "pytanie" : group.items.length < 5 ? "pytania" : "pyta\u0144"}
                       </span>
                     </div>
 
-                    {/* Bento grid for this category */}
+                    {/* Bento grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                      {category.items.map((item, itemIndex) => (
+                      {group.items.map((item, itemIndex) => (
                         <BentoQuestionCard
                           key={item.slug}
-                          question={t(item.questionKey)}
-                          answer={t(item.answerKey)}
-                          slug={item.slug}
-                          bentoClass={patterns[itemIndex] || ""}
-                          categoryIcon={Icon}
-                          categoryLabel={t(category.labelKey)}
+                          item={item}
+                          bentoClass={patterns[itemIndex % patterns.length] || ""}
                           delay={catIndex * 200 + itemIndex * 80}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          ) : (
-            // Filtered/search view -- flat bento grid
-            <div className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-              {filteredCategories.map((category) => {
-                const Icon = iconMap[category.iconName]
-                const patterns = bentoPatterns[category.id] || bentoPatterns.general
-
-                return (
-                  <div key={category.id} className="mb-12 last:mb-0">
-                    {/* Category header when searching */}
-                    {searchQuery && (
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                          <Icon className="w-4 h-4 text-accent" aria-hidden="true" />
-                        </div>
-                        <h2 className="font-serif text-xl font-bold text-foreground">
-                          {t(category.labelKey)}
-                        </h2>
-                        <div className="flex-1 h-px bg-border/40" aria-hidden="true" />
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                      {category.items.map((item, itemIndex) => (
-                        <BentoQuestionCard
-                          key={item.slug}
-                          question={t(item.questionKey)}
-                          answer={t(item.answerKey)}
-                          slug={item.slug}
-                          bentoClass={patterns[itemIndex] || ""}
-                          categoryIcon={Icon}
-                          categoryLabel={t(category.labelKey)}
-                          delay={itemIndex * 80}
                         />
                       ))}
                     </div>
