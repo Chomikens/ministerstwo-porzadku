@@ -45,9 +45,9 @@ function FaqAccordionItem({
         <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-secondary/60 flex items-center justify-center text-sm font-semibold text-muted-foreground group-hover:bg-accent/20 group-hover:text-accent transition-colors mt-0.5">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h2 className="flex-1 font-serif text-lg font-bold text-foreground leading-snug pr-4 text-pretty">
+        <h3 className="flex-1 font-serif text-lg font-bold text-foreground leading-snug pr-4 text-pretty">
           {question}
-        </h2>
+        </h3>
         <ChevronDown
           className={`w-5 h-5 text-muted-foreground flex-shrink-0 mt-1 transition-transform duration-300 ${isOpen ? "rotate-180 text-accent" : ""}`}
           aria-hidden="true"
@@ -257,9 +257,9 @@ export function FaqClient() {
                             <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
                               <Icon className="w-4 h-4 text-accent" aria-hidden="true" />
                             </div>
-                            <h3 className="font-serif text-xl font-bold text-foreground">
+                            <h2 className="font-serif text-xl font-bold text-foreground">
                               {t(category.labelKey)}
-                            </h3>
+                            </h2>
                             <div className="flex-1 h-px bg-border/60" aria-hidden="true" />
                           </div>
                         )}
