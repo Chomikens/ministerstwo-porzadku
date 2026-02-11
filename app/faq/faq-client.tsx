@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useMemo } from "react"
-import { Search, X, ChevronDown, HelpCircle, Clock, Wallet, Sparkles, Home, Package, ArrowRight } from "lucide-react"
+import { Search, X, HelpCircle, Clock, Wallet, Sparkles, Home, Package, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { faqCategories, type FaqCategory } from "@/lib/faq-data"
 import { Breadcrumbs } from "@/components/breadcrumbs"
@@ -17,62 +17,45 @@ const iconMap: Record<FaqCategory["iconName"], typeof HelpCircle> = {
   Package,
 }
 
-function FaqAccordionItem({
+function FaqQuestionLink({
   question,
   answer,
-  isOpen,
-  onToggle,
+  slug,
   index,
 }: {
   question: string
   answer: string
-  isOpen: boolean
-  onToggle: () => void
+  slug: string
   index: number
 }) {
-  const contentRef = useRef<HTMLDivElement>(null)
-
   return (
-    <div
-      className={`group border-b border-border/60 transition-all duration-300 ${isOpen ? "bg-accent/5" : ""}`}
+    <Link
+      href={`/faq/${slug}`}
+      className="group flex items-start gap-4 py-5 px-6 text-left transition-all duration-300 hover:bg-secondary/30 border-b border-border/60 last:border-b-0"
       style={{ animationDelay: `${index * 60}ms` }}
     >
-      <button
-        onClick={onToggle}
-        className="w-full flex items-start gap-4 py-6 px-6 text-left transition-colors hover:bg-secondary/30"
-        aria-expanded={isOpen}
-      >
-        <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-secondary/60 flex items-center justify-center text-sm font-semibold text-muted-foreground group-hover:bg-accent/20 group-hover:text-accent transition-colors mt-0.5">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-        <h3 className="flex-1 font-serif text-lg font-bold text-foreground leading-snug pr-4 text-pretty">
+      <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-secondary/60 flex items-center justify-center text-sm font-semibold text-muted-foreground group-hover:bg-accent/20 group-hover:text-accent transition-colors mt-0.5">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <div className="flex-1 min-w-0">
+        <h3 className="font-serif text-lg font-bold text-foreground leading-snug pr-4 text-pretty group-hover:text-accent transition-colors">
           {question}
         </h3>
-        <ChevronDown
-          className={`w-5 h-5 text-muted-foreground flex-shrink-0 mt-1 transition-transform duration-300 ${isOpen ? "rotate-180 text-accent" : ""}`}
-          aria-hidden="true"
-        />
-      </button>
-      <div
-        ref={contentRef}
-        className="overflow-hidden transition-all duration-400 ease-in-out"
-        style={{
-          maxHeight: isOpen ? contentRef.current?.scrollHeight ? `${contentRef.current.scrollHeight + 32}px` : "500px" : "0px",
-          opacity: isOpen ? 1 : 0,
-        }}
-      >
-        <div className="px-6 pb-6 pl-[4.5rem]">
-          <p className="text-muted-foreground leading-relaxed text-base">{answer}</p>
-        </div>
+        <p className="text-sm text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
+          {answer}
+        </p>
       </div>
-    </div>
+      <ArrowRight
+        className="w-5 h-5 text-muted-foreground/40 flex-shrink-0 mt-1.5 transition-all duration-300 group-hover:text-accent group-hover:translate-x-1"
+        aria-hidden="true"
+      />
+    </Link>
   )
 }
 
 export function FaqClient() {
   const { t } = useLanguage()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  const [openItems, setOpenItems] = useState<Set<string>>(new Set())
   const [searchQuery, setSearchQuery] = useState("")
   const sectionRef = useRef<HTMLElement>(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -93,18 +76,6 @@ export function FaqClient() {
 
     return () => observer.disconnect()
   }, [])
-
-  const toggleItem = (key: string) => {
-    setOpenItems((prev) => {
-      const next = new Set(prev)
-      if (next.has(key)) {
-        next.delete(key)
-      } else {
-        next.add(key)
-      }
-      return next
-    })
-  }
 
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -251,7 +222,7 @@ export function FaqClient() {
                     const Icon = iconMap[category.iconName]
                     return (
                       <div key={category.id}>
-                        {/* Category header - only show when viewing all */}
+                        {/* Category header */}
                         {(activeCategory === null || searchQuery) && (
                           <div className="flex items-center gap-3 mb-4">
                             <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
@@ -264,19 +235,15 @@ export function FaqClient() {
                           </div>
                         )}
                         <div className="rounded-xl border border-border/60 overflow-hidden bg-card shadow-sm">
-                          {category.items.map((item, itemIndex) => {
-                            const key = `${category.id}-${itemIndex}`
-                            return (
-                              <FaqAccordionItem
-                                key={key}
-                                question={t(item.questionKey)}
-                                answer={t(item.answerKey)}
-                                isOpen={openItems.has(key)}
-                                onToggle={() => toggleItem(key)}
-                                index={itemIndex}
-                              />
-                            )
-                          })}
+                          {category.items.map((item, itemIndex) => (
+                            <FaqQuestionLink
+                              key={item.slug}
+                              question={t(item.questionKey)}
+                              answer={t(item.answerKey)}
+                              slug={item.slug}
+                              index={itemIndex}
+                            />
+                          ))}
                         </div>
                       </div>
                     )

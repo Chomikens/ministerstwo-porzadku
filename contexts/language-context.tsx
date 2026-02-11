@@ -485,7 +485,11 @@ const translations = {
     "faq.page.search": "Szukaj w pytaniach...",
     "faq.page.no.results": "Brak wynik\u00F3w dla tego zapytania",
     "faq.page.all": "Wszystkie",
-
+    "faq.question.cta.text": "Chcesz dowiedzie\u0107 si\u0119 wi\u0119cej? Skontaktuj si\u0119 z nami \u2014 ch\u0119tnie odpowiem na dodatkowe pytania.",
+    "faq.question.related": "Powi\u0105zane pytania",
+    "faq.question.backToAll": "Wr\u00F3\u0107 do wszystkich pyta\u0144",
+    "faq.question.readMore": "Czytaj pe\u0142n\u0105 odpowied\u017A",
+  
     "faq.category.general": "Og\u00F3lne",
     "faq.category.process": "Proces",
     "faq.category.pricing": "Cennik",
@@ -991,7 +995,11 @@ const translations = {
     "faq.page.search": "Search questions...",
     "faq.page.no.results": "No results for this query",
     "faq.page.all": "All",
-
+    "faq.question.cta.text": "Want to learn more? Get in touch \u2014 I'll be happy to answer any additional questions.",
+    "faq.question.related": "Related questions",
+    "faq.question.backToAll": "Back to all questions",
+    "faq.question.readMore": "Read full answer",
+  
     "faq.category.general": "General",
     "faq.category.process": "Process",
     "faq.category.pricing": "Pricing",
