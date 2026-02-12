@@ -1,6 +1,8 @@
 import { category } from "./category"
 import { author } from "./author"
 import { blogPost } from "./blogPost"
+import { faqCategory } from "./faqCategory"
+import { faqQuestion } from "./faqQuestion"
 import {
   quoteBlock,
   stepByStepBlock,
@@ -20,6 +22,8 @@ export const schemaTypes = [
   category,
   author,
   blogPost,
+  faqCategory,
+  faqQuestion,
   quoteBlock,
   stepByStepBlock,
   beforeAfterBlock,

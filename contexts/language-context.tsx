@@ -22,6 +22,7 @@ const translations = {
     "nav.testimonials": "Opinie",
     "nav.ebooks": "Ebooki", // Added ebooks navigation translation
     "nav.contact": "Kontakt",
+    "nav.faq": "FAQ",
     "nav.cta": "Umów konsultację",
 
     // Breadcrumbs
@@ -31,6 +32,7 @@ const translations = {
     "breadcrumbs.blog": "Blog",
     "breadcrumbs.category": "Kategoria",
     "breadcrumbs.privacyPolicy": "Polityka Prywatno\u015Bci",
+    "breadcrumbs.faq": "FAQ",
 
     // 404 Page
     "notFound.code": "404",
@@ -471,7 +473,65 @@ const translations = {
       "Zastrzegamy sobie prawo do wprowadzania zmian w niniejszej Polityce Prywatności. O wszelkich zmianach poinformujemy na tej stronie.",
 
     "privacy.contact.title": "Kontakt",
-    "privacy.contact.desc": "W sprawach dotyczących ochrony danych osobowych prosimy o kontakt:",
+    "privacy.contact.desc": "W sprawach dotycz\u0105cych ochrony danych osobowych prosimy o kontakt:",
+
+    // FAQ Page
+    "faq.page.title": "Cz\u0119sto zadawane pytania",
+    "faq.page.subtitle": "Porz\u0105dkujemy Twoje w\u0105tpliwo\u015Bci. Ka\u017Cde pytanie zas\u0142uguje na jasn\u0105 odpowied\u017A \u2014 tak jak ka\u017Cda przestrze\u0144 zas\u0142uguje na harmonii\u0119.",
+    "faq.page.badge": "Baza wiedzy",
+    "faq.page.cta.title": "Nie znalaz\u0142e\u015B odpowiedzi?",
+    "faq.page.cta.description": "Skontaktuj si\u0119 z nami \u2014 ch\u0119tnie odpowiemy na Twoje pytania i pomo\u017Cemy dopasowa\u0107 us\u0142ug\u0119 do Twoich potrzeb.",
+    "faq.page.cta.button": "Napisz do nas",
+    "faq.page.search": "Szukaj w pytaniach...",
+    "faq.page.no.results": "Brak wynik\u00F3w dla tego zapytania",
+    "faq.page.all": "Wszystkie",
+    "faq.page.empty.title": "Wkr\u00F3tce dodamy odpowiedzi",
+    "faq.page.empty.description": "Pracujemy nad sekcj\u0105 FAQ. Wkr\u00F3tce pojawi\u0105 si\u0119 tu odpowiedzi na najcz\u0119\u015Bciej zadawane pytania.",
+    "faq.question.cta.text": "Chcesz dowiedzie\u0107 si\u0119 wi\u0119cej? Skontaktuj si\u0119 z nami \u2014 ch\u0119tnie odpowiem na dodatkowe pytania.",
+    "faq.question.related": "Powi\u0105zane pytania",
+    "faq.question.backToAll": "Wr\u00F3\u0107 do wszystkich pyta\u0144",
+    "faq.question.readMore": "Czytaj pe\u0142n\u0105 odpowied\u017A",
+  
+    "faq.category.general": "Og\u00F3lne",
+    "faq.category.process": "Proces",
+    "faq.category.pricing": "Cennik",
+    "faq.category.services": "Us\u0142ugi",
+    "faq.category.practical": "Praktyczne",
+
+    "faq.general.q1": "Czym jest decluttering?",
+    "faq.general.a1": "Decluttering to proces \u015Bwiadomego usuwania zb\u0119dnych przedmiot\u00F3w z przestrzeni \u017Cyciowej. To nie tylko sprz\u0105tanie \u2014 to zmiana podej\u015Bcia do tego, co naprawd\u0119 potrzebujesz. Pomagam Ci zdecydowa\u0107, co zachowa\u0107, co odda\u0107, a co mo\u017Cna wyrzuci\u0107, aby Tw\u00F3j dom sta\u0142 si\u0119 bardziej funkcjonalny i harmonijny.",
+    "faq.general.q2": "Jak wygl\u0105da wsp\u00F3\u0142praca z Professional Organizerem?",
+    "faq.general.a2": "Wsp\u00F3\u0142praca zaczyna si\u0119 od bezp\u0142atnej konsultacji telefonicznej, podczas kt\u00F3rej omawiamy Twoje potrzeby i cele. Nast\u0119pnie tworz\u0119 indywidualny plan dzia\u0142ania i realizuj\u0119 go wsp\u00F3lnie z Tob\u0105, krok po kroku, a\u017C do osi\u0105gni\u0119cia wymarzonej przestrzeni. Ca\u0142y proces jest dopasowany do Twojego tempa i preferencji.",
+    "faq.general.q3": "Czy musz\u0119 by\u0107 obecny/a podczas organizacji?",
+    "faq.general.a3": "Tak, Twoja obecno\u015B\u0107 jest wa\u017Cna, szczeg\u00F3lnie podczas etapu selekcji (declutteringu). Wsp\u00F3lnie podejmujemy decyzje o tym, co zachowa\u0107. Mog\u0119 jednak pracowa\u0107 samodzielnie przy organizowaniu ju\u017C posegregowanych rzeczy, je\u015Bli wolisz. Wszystko ustalamy indywidualnie.",
+
+    "faq.process.q1": "Jak d\u0142ugo trwa organizacja przestrzeni?",
+    "faq.process.a1": "Czas realizacji zale\u017Cy od wielko\u015Bci przestrzeni i zakresu prac. Ma\u0142a szafa mo\u017Ce zaj\u0105\u0107 2-3 godziny, pojedynczy pok\u00F3j to ok. 4-6 godzin, a pe\u0142na organizacja domu to kilka dni pracy. Dok\u0142adny harmonogram ustalimy podczas wst\u0119pnej konsultacji.",
+    "faq.process.q2": "Jak si\u0119 przygotowa\u0107 do wizyty organizera?",
+    "faq.process.a2": "Nie musisz robi\u0107 nic specjalnego! Najwa\u017Cniejsze to by\u0107 otwartym na zmiany i mie\u0107 gotowo\u015B\u0107 do podejmowania decyzji. Przed wizyt\u0105 wy\u015Bl\u0119 Ci kr\u00F3tki kwestionariusz, kt\u00F3ry pomo\u017Ce mi lepiej zrozumie\u0107 Twoje potrzeby i przygotowa\u0107 si\u0119 do pracy.",
+    "faq.process.q3": "Co dzieje si\u0119 z rzeczami, kt\u00F3re zdecyduj\u0119 si\u0119 odda\u0107?",
+    "faq.process.a3": "Pomagam posortowa\u0107 rzeczy na kategorie: do oddania (PCK, fundacje, znajomi), do sprzeda\u017Cy (OLX, bazarki) i do utylizacji. Mog\u0119 te\u017C pom\u00F3c z organizacj\u0105 odbioru przez organizacje charytatywne. \u017Badna rzecz nie jest wyrzucana bez Twojej \u015Bwiadomej decyzji.",
+
+    "faq.pricing.q1": "Ile kosztuj\u0105 us\u0142ugi organizacji przestrzeni?",
+    "faq.pricing.a1": "Wycena jest indywidualna i zale\u017Cy od zakresu prac, wielko\u015Bci przestrzeni i lokalizacji. Konsultacja online/stacjonarna to 1500 z\u0142. Pozosta\u0142e us\u0142ugi wyceniam po bezp\u0142atnej rozmowie telefonicznej, podczas kt\u00F3rej poznam Twoje potrzeby.",
+    "faq.pricing.q2": "Czy musz\u0119 kupowa\u0107 organizery i pojemniki?",
+    "faq.pricing.a2": "Nie zawsze! Cz\u0119sto okazuje si\u0119, \u017Ce po declutteringu wystarczy to, co ju\u017C masz. Je\u015Bli potrzebne s\u0105 dodatkowe organizery, dobior\u0119 je specjalnie do Twojej przestrzeni i bud\u017Cetu. Zawsze rekomenduj\u0119 rozwi\u0105zania, kt\u00F3re s\u0105 praktyczne i estetyczne.",
+    "faq.pricing.q3": "Czy dojazd jest wliczony w cen\u0119?",
+    "faq.pricing.a3": "Dojazd w obr\u0119bie Warszawy jest wliczony w cen\u0119 us\u0142ugi. W przypadku lokalizacji poza Warszaw\u0105 (do 50 km) doliczam symboliczn\u0105 op\u0142at\u0119 za dojazd, kt\u00F3r\u0105 ustalimy indywidualnie.",
+
+    "faq.services.q1": "Czy obs\u0142ugujecie ca\u0142\u0105 Warszaw\u0119?",
+    "faq.services.a1": "Tak, obs\u0142uguj\u0119 ca\u0142\u0105 Warszaw\u0119 i okolice do 50 km, w tym dzielnice: Mokot\u00F3w, \u015Ar\u00F3dmie\u015Bcie, Ochota, Wola, \u017Boliborz, Praga i inne. Konsultacje online s\u0105 dost\u0119pne dla klient\u00F3w z ca\u0142ej Polski.",
+    "faq.services.q2": "Jaka jest r\u00F3\u017Cnica mi\u0119dzy us\u0142ugami?",
+    "faq.services.a2": "Projektowa organizacja to kompleksowy plan od audytu po wdro\u017Cenie systemu. Decluttering to selekcja i porz\u0105dkowanie istniej\u0105cych rzeczy. Wsparcie w przeprowadzce to pomoc od pakowania po organizacj\u0119 nowej przestrzeni. Konsultacja to indywidualna rozmowa i plan, kt\u00F3ry wdra\u017Casz samodzielnie.",
+    "faq.services.q3": "Czy oferujecie us\u0142ugi dla firm i biur?",
+    "faq.services.a3": "Tak! Organizacja przestrzeni biurowej to r\u00F3wnie wa\u017Cna cz\u0119\u015B\u0107 mojej pracy. Pomagam firmom w optymalizacji przestrzeni, tworzeniu system\u00F3w przechowywania dokument\u00F3w i organizacji stanowisk pracy. Skontaktuj si\u0119, aby om\u00F3wi\u0107 potrzeby Twojej firmy.",
+
+    "faq.practical.q1": "Jak utrzyma\u0107 porz\u0105dek po organizacji?",
+    "faq.practical.a1": "Ka\u017Cdy klient otrzymuje ode mnie wskaz\u00F3wki dotycz\u0105ce utrzymania nowego porz\u0105dku. Kluczem jest zasada \u201Ejedno wchodzi, jedno wychodzi\u201D oraz regularne 10-minutowe sesje porz\u0105dkowe. System organizacji, kt\u00F3ry wdra\u017Cam, jest zaprojektowany tak, aby by\u0142 intuicyjny i \u0142atwy w utrzymaniu.",
+    "faq.practical.q2": "Czy organizacja przestrzeni dzia\u0142a z dzie\u0107mi?",
+    "faq.practical.a2": "Absolutnie! Tworz\u0119 systemy organizacji dostosowane do wieku dzieci \u2014 niskie p\u00F3\u0142ki, oznakowane pojemniki z obrazkami, strefy do zabawy i nauki. Dzieci ch\u0119tnie utrzymuj\u0105 porz\u0105dek, gdy wiedz\u0105, gdzie co nale\u017Cy od\u0142o\u017Cy\u0107.",
+    "faq.practical.q3": "Czy pomagasz r\u00F3wnie\u017C z gara\u017Cem, piwnic\u0105, strychem?",
+    "faq.practical.a3": "Tak, organizuj\u0119 ka\u017Cd\u0105 przestrze\u0144 \u2014 od garderoby po gara\u017C, piwnic\u0119, strych czy dom\u0119k letniskowy. Cz\u0119sto to w\u0142a\u015Bnie te pomieszczenia s\u0105 najwi\u0119kszym wyzwaniem i przynosz\u0105 najwi\u0119cej satysfakcji po organizacji.",
   },
   en: {
     // Navigation
@@ -482,6 +542,7 @@ const translations = {
     "nav.testimonials": "Testimonials",
     "nav.ebooks": "Ebooks", // Added ebooks navigation translation
     "nav.contact": "Contact",
+    "nav.faq": "FAQ",
     "nav.cta": "Book Consultation",
 
     // Breadcrumbs
@@ -491,6 +552,7 @@ const translations = {
     "breadcrumbs.blog": "Blog",
     "breadcrumbs.category": "Category",
     "breadcrumbs.privacyPolicy": "Privacy Policy",
+    "breadcrumbs.faq": "FAQ",
 
     // 404 Page
     "notFound.code": "404",
@@ -924,6 +986,64 @@ const translations = {
 
     "privacy.contact.title": "Contact",
     "privacy.contact.desc": "For matters related to personal data protection, please contact:",
+
+    // FAQ Page
+    "faq.page.title": "Frequently Asked Questions",
+    "faq.page.subtitle": "We organize your doubts. Every question deserves a clear answer \u2014 just like every space deserves harmony.",
+    "faq.page.badge": "Knowledge Base",
+    "faq.page.cta.title": "Didn't find your answer?",
+    "faq.page.cta.description": "Get in touch with us \u2014 we'll be happy to answer your questions and help match the right service to your needs.",
+    "faq.page.cta.button": "Contact us",
+    "faq.page.search": "Search questions...",
+    "faq.page.no.results": "No results for this query",
+    "faq.page.all": "All",
+    "faq.page.empty.title": "Answers coming soon",
+    "faq.page.empty.description": "We're working on the FAQ section. Answers to the most frequently asked questions will appear here soon.",
+    "faq.question.cta.text": "Want to learn more? Get in touch \u2014 I'll be happy to answer any additional questions.",
+    "faq.question.related": "Related questions",
+    "faq.question.backToAll": "Back to all questions",
+    "faq.question.readMore": "Read full answer",
+  
+    "faq.category.general": "General",
+    "faq.category.process": "Process",
+    "faq.category.pricing": "Pricing",
+    "faq.category.services": "Services",
+    "faq.category.practical": "Practical",
+
+    "faq.general.q1": "What is decluttering?",
+    "faq.general.a1": "Decluttering is the process of consciously removing unnecessary items from your living space. It's not just cleaning \u2014 it's changing your approach to what you truly need. I help you decide what to keep, what to donate, and what can be discarded to make your home more functional and harmonious.",
+    "faq.general.q2": "What does working with a Professional Organizer look like?",
+    "faq.general.a2": "The collaboration starts with a free phone consultation where we discuss your needs and goals. Then I create an individual action plan and work together with you, step by step, until we achieve your dream space. The entire process is tailored to your pace and preferences.",
+    "faq.general.q3": "Do I need to be present during the organization?",
+    "faq.general.a3": "Yes, your presence is important, especially during the sorting (decluttering) phase. We make decisions together about what to keep. However, I can work independently when organizing already sorted items, if you prefer. Everything is arranged individually.",
+
+    "faq.process.q1": "How long does space organization take?",
+    "faq.process.a1": "The timeline depends on the size of the space and scope of work. A small closet may take 2-3 hours, a single room about 4-6 hours, and full home organization takes several days. We'll set an exact schedule during the initial consultation.",
+    "faq.process.q2": "How should I prepare for the organizer's visit?",
+    "faq.process.a2": "You don't need to do anything special! The most important thing is to be open to changes and ready to make decisions. Before the visit, I'll send you a short questionnaire to help me better understand your needs and prepare for the work.",
+    "faq.process.q3": "What happens to items I decide to give away?",
+    "faq.process.a3": "I help sort items into categories: for donation (charities, friends), for sale (online marketplaces), and for disposal. I can also help organize pickup by charitable organizations. Nothing is discarded without your conscious decision.",
+
+    "faq.pricing.q1": "How much do space organization services cost?",
+    "faq.pricing.a1": "Pricing is individual and depends on the scope of work, space size, and location. Online/in-person consultation is 1500 PLN. Other services are quoted after a free phone call during which I learn about your needs.",
+    "faq.pricing.q2": "Do I need to buy organizers and containers?",
+    "faq.pricing.a2": "Not always! Often after decluttering, what you already have is sufficient. If additional organizers are needed, I'll select them specifically for your space and budget. I always recommend solutions that are both practical and aesthetic.",
+    "faq.pricing.q3": "Is travel included in the price?",
+    "faq.pricing.a3": "Travel within Warsaw is included in the service price. For locations outside Warsaw (up to 50 km), I add a symbolic travel fee, which we'll agree on individually.",
+
+    "faq.services.q1": "Do you serve all of Warsaw?",
+    "faq.services.a1": "Yes, I serve all of Warsaw and surrounding areas up to 50 km, including districts: Mokot\u00F3w, \u015Ar\u00F3dmie\u015Bcie, Ochota, Wola, \u017Boliborz, Praga, and more. Online consultations are available for clients throughout Poland.",
+    "faq.services.q2": "What's the difference between services?",
+    "faq.services.a2": "Project organization is a comprehensive plan from audit to system implementation. Decluttering is sorting and organizing existing items. Moving support is help from packing to organizing new spaces. Consultation is an individual conversation and plan that you implement on your own.",
+    "faq.services.q3": "Do you offer services for businesses and offices?",
+    "faq.services.a3": "Yes! Office space organization is an equally important part of my work. I help companies optimize space, create document storage systems, and organize workstations. Get in touch to discuss your company's needs.",
+
+    "faq.practical.q1": "How to maintain order after organization?",
+    "faq.practical.a1": "Every client receives tips on maintaining the new order. The key is the 'one in, one out' rule and regular 10-minute tidying sessions. The organization system I implement is designed to be intuitive and easy to maintain.",
+    "faq.practical.q2": "Does space organization work with children?",
+    "faq.practical.a2": "Absolutely! I create organization systems adapted to children's ages \u2014 low shelves, labeled containers with pictures, play and study zones. Children are happy to maintain order when they know where everything belongs.",
+    "faq.practical.q3": "Do you also help with garages, basements, attics?",
+    "faq.practical.a3": "Yes, I organize every space \u2014 from wardrobes to garages, basements, attics, and summer houses. Often these rooms are the biggest challenge and bring the most satisfaction after organization.",
   },
 }
 

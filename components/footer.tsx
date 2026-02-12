@@ -36,6 +36,14 @@ export function Footer() {
                 </li>
                 <li>
                   <a
+                    href="/faq"
+                    className="text-primary-foreground/95 hover:text-accent transition-smooth"
+                  >
+                    {t("nav.faq")}
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="/polityka-prywatnosci"
                     className="text-primary-foreground/95 hover:text-accent transition-smooth"
                   >
