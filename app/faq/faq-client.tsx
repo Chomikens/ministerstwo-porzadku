@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useMemo } from "react"
 import { Search, X, HelpCircle, Clock, Wallet, Sparkles, Home, Package, ArrowRight, LayoutGrid } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
-import { faqCategories, type FaqCategory } from "@/lib/faq-data"
 import type { SanityFaqCategory, SanityFaqQuestion } from "@/lib/sanity.faq-queries"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Button } from "@/components/ui/button"
@@ -127,39 +126,24 @@ export function FaqClient({ sanityGroups }: FaqClientProps) {
     return () => observer.disconnect()
   }, [])
 
-  // Normalize data from either Sanity or static
+  // Normalize data from Sanity
   const groups: NormalizedGroup[] = useMemo(() => {
-    if (sanityGroups && sanityGroups.length > 0) {
-      return sanityGroups.map((g) => ({
-        id: g.category.slug,
-        label: g.category.title,
-        icon: g.category.icon || "HelpCircle",
-        items: g.questions.map((q) => ({
-          slug: q.slug,
-          question: q.question,
-          shortAnswer: q.shortAnswer,
-          categoryId: g.category.slug,
-          categoryLabel: g.category.title,
-          categoryIcon: g.category.icon || "HelpCircle",
-        })),
-      }))
-    }
+    if (!sanityGroups || sanityGroups.length === 0) return []
 
-    // Fall back to static data
-    return faqCategories.map((c) => ({
-      id: c.id,
-      label: t(c.labelKey),
-      icon: c.iconName,
-      items: c.items.map((item) => ({
-        slug: item.slug,
-        question: t(item.questionKey),
-        shortAnswer: t(item.answerKey),
-        categoryId: c.id,
-        categoryLabel: t(c.labelKey),
-        categoryIcon: c.iconName,
+    return sanityGroups.map((g) => ({
+      id: g.category.slug,
+      label: g.category.title,
+      icon: g.category.icon || "HelpCircle",
+      items: g.questions.map((q) => ({
+        slug: q.slug,
+        question: q.question,
+        shortAnswer: q.shortAnswer,
+        categoryId: g.category.slug,
+        categoryLabel: g.category.title,
+        categoryIcon: g.category.icon || "HelpCircle",
       })),
     }))
-  }, [sanityGroups, t])
+  }, [sanityGroups])
 
   const filteredGroups = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -181,6 +165,7 @@ export function FaqClient({ sanityGroups }: FaqClientProps) {
   }, [searchQuery, activeCategory, groups])
 
   const totalResults = filteredGroups.reduce((sum, g) => sum + g.items.length, 0)
+  const hasData = groups.length > 0
 
   return (
     <main className="min-h-screen bg-background">
@@ -210,7 +195,7 @@ export function FaqClient({ sanityGroups }: FaqClientProps) {
           </div>
 
           {/* Search Bar */}
-          <div className="mt-10 max-w-xl mx-auto">
+          {hasData && <div className="mt-10 max-w-xl mx-auto">
             <div className="relative group">
               <Search
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-accent transition-colors"
@@ -234,10 +219,10 @@ export function FaqClient({ sanityGroups }: FaqClientProps) {
                 </button>
               )}
             </div>
-          </div>
-
+          </div>}
+  
           {/* Category Pills */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
+          {hasData && <div className="mt-8 flex flex-wrap justify-center gap-2">
             <button
               onClick={() => setActiveCategory(null)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
@@ -266,14 +251,26 @@ export function FaqClient({ sanityGroups }: FaqClientProps) {
                 </button>
               )
             })}
-          </div>
+          </div>}
         </div>
       </section>
-
-      {/* FAQ Bento Grid */}
+  
+      {/* FAQ Bento Grid or Empty State */}
       <section ref={sectionRef} className="py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-6xl">
-          {totalResults === 0 ? (
+          {!hasData ? (
+            <div className="text-center py-20">
+              <div className="w-20 h-20 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-6">
+                <Package className="w-9 h-9 text-accent" />
+              </div>
+              <h2 className="font-serif text-2xl font-bold text-foreground mb-3">
+                {t("faq.page.empty.title")}
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-md mx-auto">
+                {t("faq.page.empty.description")}
+              </p>
+            </div>
+          ) : totalResults === 0 ? (
             <div className="text-center py-20">
               <div className="w-16 h-16 rounded-2xl bg-secondary/60 flex items-center justify-center mx-auto mb-4">
                 <Search className="w-7 h-7 text-muted-foreground" />

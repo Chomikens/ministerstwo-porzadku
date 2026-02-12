@@ -8,20 +8,15 @@ import {
   getAllFaqSlugsFromSanity,
   extractPlainText,
 } from "@/lib/sanity.faq-queries"
-import { getFaqBySlug, getAllFaqSlugs as getStaticFaqSlugs } from "@/lib/faq-data"
 import { notFound } from "next/navigation"
 
 export async function generateStaticParams() {
-  // Try Sanity first, fall back to static data
   try {
-    const sanitySlugs = await getAllFaqSlugsFromSanity("pl")
-    if (sanitySlugs.length > 0) {
-      return sanitySlugs.map((slug) => ({ slug }))
-    }
+    const slugs = await getAllFaqSlugsFromSanity("pl")
+    return slugs.map((slug) => ({ slug }))
   } catch {
-    // Sanity not available, use static data
+    return []
   }
-  return getStaticFaqSlugs().map((slug) => ({ slug }))
 }
 
 export const dynamicParams = true
@@ -67,17 +62,8 @@ export async function generateMetadata({
     // Sanity not available
   }
 
-  // Fallback to static data
-  const staticResult = getFaqBySlug(slug)
-  if (!staticResult) {
-    return { title: "Pytanie nie znalezione | Ministerstwo Porzadku" }
-  }
-
-  const canonicalUrl = `https://ministerstwoporzadku.pl/faq/${slug}`
   return {
-    title: `FAQ | Ministerstwo Porzadku`,
-    description: "Czesto zadawane pytania o decluttering i organizacje przestrzeni.",
-    alternates: { canonical: canonicalUrl },
+    title: "Pytanie nie znalezione | Ministerstwo Porzadku",
   }
 }
 
@@ -88,7 +74,6 @@ export default async function FaqQuestionPage({
 }) {
   const { slug } = await params
 
-  // Try Sanity first
   let sanityQuestion = null
   let sanityRelated: Awaited<ReturnType<typeof getRelatedFaqQuestions>> = []
 
@@ -106,12 +91,8 @@ export default async function FaqQuestionPage({
     // Sanity not available
   }
 
-  // If no Sanity data, check static fallback
   if (!sanityQuestion) {
-    const staticResult = getFaqBySlug(slug)
-    if (!staticResult) {
-      notFound()
-    }
+    notFound()
   }
 
   // Build JSON-LD -- use full Portable Text answer for richer schema
@@ -173,7 +154,7 @@ export default async function FaqQuestionPage({
       <Navigation />
       <FaqQuestionClient
         slug={slug}
-        sanityQuestion={sanityQuestion ? JSON.parse(JSON.stringify(sanityQuestion)) : null}
+        sanityQuestion={JSON.parse(JSON.stringify(sanityQuestion))}
         sanityRelated={sanityRelated.length > 0 ? JSON.parse(JSON.stringify(sanityRelated)) : null}
       />
       <Footer />

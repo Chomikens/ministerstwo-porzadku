@@ -3,14 +3,13 @@
 import { useEffect, useRef } from "react"
 import { ArrowRight, HelpCircle, Clock, Wallet, Sparkles, Home, Package } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
-import { getFaqBySlug, getRelatedFaq, type FaqCategory } from "@/lib/faq-data"
 import type { SanityFaqQuestion } from "@/lib/sanity.faq-queries"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { BlogContent } from "@/components/blog/blog-content"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-const iconMap: Record<FaqCategory["iconName"], typeof HelpCircle> = {
+const iconMap: Record<string, typeof HelpCircle> = {
   HelpCircle,
   Clock,
   Wallet,
@@ -21,18 +20,13 @@ const iconMap: Record<FaqCategory["iconName"], typeof HelpCircle> = {
 
 interface FaqQuestionClientProps {
   slug: string
-  sanityQuestion?: SanityFaqQuestion | null
+  sanityQuestion: SanityFaqQuestion
   sanityRelated?: SanityFaqQuestion[] | null
 }
 
 export function FaqQuestionClient({ slug, sanityQuestion, sanityRelated }: FaqQuestionClientProps) {
   const { t } = useLanguage()
   const sectionRef = useRef<HTMLDivElement>(null)
-
-  // Determine data source
-  const useSanity = !!sanityQuestion
-  const staticResult = !useSanity ? getFaqBySlug(slug) : null
-  const staticRelated = staticResult ? getRelatedFaq(slug, staticResult.category.id, 3) : []
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -56,30 +50,22 @@ export function FaqQuestionClient({ slug, sanityQuestion, sanityRelated }: FaqQu
     return () => observer.disconnect()
   }, [])
 
-  if (!useSanity && !staticResult) return null
-
-  // Normalize data for rendering
-  const question = useSanity ? sanityQuestion!.question : t(staticResult!.item.questionKey)
-  const categoryName = useSanity ? sanityQuestion!.category.title : t(staticResult!.category.labelKey)
-  const categoryIcon = useSanity ? (sanityQuestion!.category.icon as FaqCategory["iconName"]) : staticResult!.category.iconName
+  const question = sanityQuestion.question
+  const categoryName = sanityQuestion.category.title
+  const categoryIcon = sanityQuestion.category.icon || "HelpCircle"
   const CategoryIcon = iconMap[categoryIcon] || HelpCircle
 
-  const hasRichAnswer = useSanity && sanityQuestion!.answer && sanityQuestion!.answer.length > 0
-  const plainAnswer = useSanity ? sanityQuestion!.shortAnswer : t(staticResult!.item.answerKey)
+  const hasRichAnswer = sanityQuestion.answer && sanityQuestion.answer.length > 0
+  const plainAnswer = sanityQuestion.shortAnswer
 
-  const relatedItems = useSanity && sanityRelated
+  const relatedItems = sanityRelated
     ? sanityRelated.map((q) => ({
         slug: q.slug,
         question: q.question,
         categoryName: q.category.title,
-        categoryIcon: (q.category.icon as FaqCategory["iconName"]) || "HelpCircle",
+        categoryIcon: q.category.icon || "HelpCircle",
       }))
-    : staticRelated.map((r) => ({
-        slug: r.item.slug,
-        question: t(r.item.questionKey),
-        categoryName: t(r.category.labelKey),
-        categoryIcon: r.category.iconName,
-      }))
+    : []
 
   return (
     <div ref={sectionRef} className="min-h-screen bg-background">
@@ -129,7 +115,7 @@ export function FaqQuestionClient({ slug, sanityQuestion, sanityRelated }: FaqQu
               <div className="observe-animation opacity-0 stagger-2">
                 <div className="p-8 sm:p-10 bg-card rounded-2xl border border-border shadow-sm">
                   {hasRichAnswer ? (
-                    <BlogContent content={sanityQuestion!.answer} />
+                    <BlogContent content={sanityQuestion.answer} />
                   ) : (
                     <p className="text-lg sm:text-xl text-foreground/80 leading-relaxed whitespace-pre-line">
                       {plainAnswer}
