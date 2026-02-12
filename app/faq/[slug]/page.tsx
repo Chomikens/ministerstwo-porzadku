@@ -6,6 +6,7 @@ import {
   getFaqQuestionBySlug,
   getRelatedFaqQuestions,
   getAllFaqSlugsFromSanity,
+  extractPlainText,
 } from "@/lib/sanity.faq-queries"
 import { getFaqBySlug, getAllFaqSlugs as getStaticFaqSlugs } from "@/lib/faq-data"
 import { notFound } from "next/navigation"
@@ -113,9 +114,12 @@ export default async function FaqQuestionPage({
     }
   }
 
-  // Build JSON-LD
+  // Build JSON-LD -- use full Portable Text answer for richer schema
   const questionText = sanityQuestion?.question || slug
-  const answerText = sanityQuestion?.shortAnswer || ""
+  const fullAnswerText = sanityQuestion?.answer
+    ? extractPlainText(sanityQuestion.answer)
+    : ""
+  const answerText = fullAnswerText || sanityQuestion?.shortAnswer || ""
   const canonicalUrl = `https://ministerstwoporzadku.pl/faq/${slug}`
 
   const jsonLd = {

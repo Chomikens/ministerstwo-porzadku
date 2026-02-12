@@ -1,6 +1,21 @@
 import { cache } from "react"
 import { client } from "./sanity"
 
+// Extract plain text from Portable Text blocks for JSON-LD schema
+export function extractPlainText(portableText: any[]): string {
+  if (!portableText || !Array.isArray(portableText)) return ""
+  return portableText
+    .filter((block: any) => block._type === "block" && block.children)
+    .map((block: any) =>
+      block.children
+        .filter((child: any) => child._type === "span")
+        .map((span: any) => span.text)
+        .join("")
+    )
+    .join(" ")
+    .trim()
+}
+
 export interface SanityFaqCategory {
   _id: string
   title: string
