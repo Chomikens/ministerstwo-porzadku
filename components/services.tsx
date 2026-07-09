@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { Sparkles, ArrowRight, Home, Briefcase, Package } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { services as servicesData, type ServiceIconName } from "@/lib/services-data"
-import Link from "next/link"
+import Link from "@/components/ui/locale-link"
 
 const iconMap: Record<ServiceIconName, typeof Home> = {
   Home,

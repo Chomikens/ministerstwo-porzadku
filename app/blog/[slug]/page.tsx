@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
 import Image from "next/image"
-import Link from "next/link"
+import Link from "@/components/ui/locale-link"
 import type { Metadata } from "next"
 import { format } from "date-fns"
 import { pl } from "date-fns/locale"
@@ -53,13 +53,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
       title: metaTitle,
       description: metaDescription,
-      alternates: {
-        canonical: `${baseUrl}/blog/${slug}`,
-        languages: {
-          pl: `${baseUrl}/blog/${slug}`,
-          en: `${baseUrl}/blog/${slug}`,
-        },
-      },
+      // Ukryte szkice: noindex/nofollow (URL działa do podglądu, ale wyszukiwarki go nie indeksują).
+      robots: post.hidden ? { index: false, follow: false } : undefined,
+      // Self-referencing canonical dostarcza layout (slugi PL/EN różnią się per dokument Sanity).
       openGraph: {
         title: metaTitle,
         description: metaDescription,

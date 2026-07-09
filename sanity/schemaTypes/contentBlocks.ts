@@ -12,6 +12,35 @@ import {
   LinkIcon,
 } from "@sanity/icons"
 
+// 0. Key Takeaways ("W skrócie") — non-interactive summary box
+export const keyTakeawaysBlock = defineType({
+  name: "keyTakeawaysBlock",
+  title: "W skrócie (podsumowanie)",
+  type: "object",
+  icon: ClipboardIcon,
+  fields: [
+    {
+      name: "title",
+      title: "Tytuł",
+      type: "string",
+      initialValue: "W skrócie",
+    },
+    {
+      name: "items",
+      title: "Punkty",
+      type: "array",
+      of: [{ type: "string" }],
+      validation: (Rule) => Rule.required().min(2),
+    },
+  ],
+  preview: {
+    select: { title: "title", items: "items" },
+    prepare({ title, items }) {
+      return { title: title || "W skrócie", subtitle: `${items?.length || 0} punktów` }
+    },
+  },
+})
+
 // 1. Quote Block
 export const quoteBlock = defineType({
   name: "quoteBlock",

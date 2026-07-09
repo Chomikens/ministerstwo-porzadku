@@ -4,9 +4,10 @@ import { useLanguage } from "@/contexts/language-context"
 import { Music2 } from "lucide-react"
 import { useState } from "react"
 import { CookieSettingsModal } from "@/components/cookie-settings-modal"
+import { localizedPath } from "@/lib/i18n"
 
 export function Footer() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [showCookieSettings, setShowCookieSettings] = useState(false)
 
   return (
@@ -36,7 +37,7 @@ export function Footer() {
                 </li>
                 <li>
                   <a
-                    href="/polityka-prywatnosci"
+                    href={localizedPath("/polityka-prywatnosci", language)}
                     className="text-primary-foreground/95 hover:text-accent transition-smooth"
                   >
                     {t("privacy.title")}
@@ -58,22 +59,22 @@ export function Footer() {
               <h4 className="font-semibold text-lg">{t("nav.services")}</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="/uslugi/projektowa-organizacja-przestrzeni" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                  <a href={localizedPath("/uslugi/projektowa-organizacja-przestrzeni", language)} className="text-primary-foreground/95 hover:text-accent transition-smooth">
                     {t("services.home.title")}
                   </a>
                 </li>
                 <li>
-                  <a href="/uslugi/decluttering-i-organizacja-przestrzeni" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                  <a href={localizedPath("/uslugi/decluttering-i-organizacja-przestrzeni", language)} className="text-primary-foreground/95 hover:text-accent transition-smooth">
                     {t("services.office.title")}
                   </a>
                 </li>
                 <li>
-                  <a href="/uslugi/wsparcie-w-przeprowadzce" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                  <a href={localizedPath("/uslugi/wsparcie-w-przeprowadzce", language)} className="text-primary-foreground/95 hover:text-accent transition-smooth">
                     {t("services.moving.title")}
                   </a>
                 </li>
                 <li>
-                  <a href="/uslugi/konsultacja-online" className="text-primary-foreground/95 hover:text-accent transition-smooth">
+                  <a href={localizedPath("/uslugi/konsultacja-online", language)} className="text-primary-foreground/95 hover:text-accent transition-smooth">
                     {t("services.online.title")}
                   </a>
                 </li>

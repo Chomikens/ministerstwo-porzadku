@@ -1,10 +1,10 @@
-import { cookies } from "next/headers"
+import { getRequestLocale } from "./i18n-server"
 
+/**
+ * Server-side current language. Now derived from the URL (via the middleware
+ * `x-language` header) instead of a cookie, so each locale has a distinct,
+ * crawlable URL.
+ */
 export async function getLanguage(): Promise<"pl" | "en"> {
-  const cookieStore = await cookies()
-  const language = cookieStore.get("language")?.value
-
-  console.log("[v0] Server-side language from cookie:", language)
-
-  return language === "en" ? "en" : "pl"
+  return getRequestLocale()
 }

@@ -18,8 +18,35 @@ import {
   Megaphone,
 } from "lucide-react"
 import { useState } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/locale-link"
 import { useContactForm } from "@/contexts/contact-form-context"
+
+// 0. Key Takeaways ("W skrócie") - non-interactive summary card
+export function KeyTakeawaysBlock({ value }: any) {
+  return (
+    <div className="my-10">
+      <aside
+        className="rounded-3xl border-2 border-accent/25 bg-gradient-to-br from-accent/10 via-secondary/10 to-background p-6 md:p-8 shadow-sm"
+        aria-label={value.title || "W skrócie"}
+      >
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-5 h-5 text-accent" aria-hidden="true" />
+          </div>
+          <h4 className="font-serif text-xl md:text-2xl font-bold text-foreground m-0">{value.title || "W skrócie"}</h4>
+        </div>
+        <ul className="space-y-3 list-none m-0 p-0">
+          {value.items?.map((item: string, index: number) => (
+            <li key={index} className="flex gap-3 items-start">
+              <span className="flex-shrink-0 mt-[0.55rem] w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
+              <span className="text-foreground leading-relaxed flex-1">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  )
+}
 
 // 1. Quote Block - clean design without gradients
 export function QuoteBlock({ value }: any) {

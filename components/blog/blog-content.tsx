@@ -4,6 +4,7 @@ import { PortableText } from "@portabletext/react"
 import Image from "next/image"
 import { urlFor } from "@/lib/sanity"
 import {
+  KeyTakeawaysBlock,
   QuoteBlock,
   StepByStepBlock,
   BeforeAfterBlock,
@@ -57,6 +58,7 @@ const components = {
     ),
   },
   types: {
+    keyTakeawaysBlock: KeyTakeawaysBlock,
     image: ({ value }: any) => {
       if (!value?.asset?._ref) {
         return null

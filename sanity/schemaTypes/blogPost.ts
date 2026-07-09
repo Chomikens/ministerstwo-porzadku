@@ -129,6 +129,7 @@ export const blogPost = defineType({
             },
           ],
         },
+        { type: "keyTakeawaysBlock" },
         { type: "quoteBlock" },
         { type: "stepByStepBlock" },
         { type: "beforeAfterBlock" },
@@ -162,6 +163,14 @@ export const blogPost = defineType({
           validation: (Rule) => Rule.max(155),
         },
       ],
+    }),
+    defineField({
+      name: "hidden",
+      title: "Ukryty (szkic / noindex)",
+      type: "boolean",
+      description:
+        "Gdy włączone: artykuł nie pojawia się na liście bloga, w kategoriach ani w sitemapie i dostaje meta robots noindex. URL nadal działa do podglądu. Wyłącz, aby opublikować publicznie.",
+      initialValue: false,
     }),
   ],
   preview: {

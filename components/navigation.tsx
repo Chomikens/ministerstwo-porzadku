@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Menu, X, Sun, Moon, Globe } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { useTheme } from "@/contexts/theme-context"
+import { localizedPath } from "@/lib/i18n"
 import Image from "next/image"
 
 export function Navigation() {
@@ -19,7 +20,9 @@ export function Navigation() {
   const { theme, toggleTheme } = useTheme()
   const pathname = usePathname()
   const router = useRouter()
-  const isHomePage = pathname === "/"
+  const isHomePage = pathname === "/" || pathname === "/en"
+  const homeHref = localizedPath("/", language)
+  const blogHref = localizedPath("/blog", language)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,7 +67,7 @@ export function Navigation() {
       }
     } else {
       const hash = href.replace("/", "")
-      router.push("/")
+      router.push(homeHref)
       setTimeout(() => {
         const sectionId = hash.replace("#", "")
         const element = document.getElementById(sectionId)
@@ -76,11 +79,11 @@ export function Navigation() {
   }
 
   const navLinks = [
-    { href: isHomePage ? "#o-mnie" : "/#o-mnie", label: t("nav.about") },
-    { href: isHomePage ? "#uslugi" : "/#uslugi", label: t("nav.services") },
-    { href: isHomePage ? "#transformacje" : "/#transformacje", label: t("nav.transformations") },
-    { href: isHomePage ? "#kontakt" : "/#kontakt", label: t("nav.contact") },
-    { href: "/blog", label: t("blog.title"), isPage: true },
+    { href: isHomePage ? "#o-mnie" : `${homeHref}#o-mnie`, label: t("nav.about") },
+    { href: isHomePage ? "#uslugi" : `${homeHref}#uslugi`, label: t("nav.services") },
+    { href: isHomePage ? "#transformacje" : `${homeHref}#transformacje`, label: t("nav.transformations") },
+    { href: isHomePage ? "#kontakt" : `${homeHref}#kontakt`, label: t("nav.contact") },
+    { href: blogHref, label: t("blog.title"), isPage: true },
   ]
 
   return (
@@ -94,7 +97,7 @@ export function Navigation() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <a href="/" className="flex items-center gap-2 group" aria-label="ministerstwo porządku - Strona główna">
+            <a href={homeHref} className="flex items-center gap-2 group" aria-label="ministerstwo porządku - Strona główna">
               <Image
                 src="/ministerstwo-porzadku-logo.png"
                 alt="ministerstwo porządku"
@@ -218,8 +221,8 @@ export function Navigation() {
               tabIndex={isMenuOpen ? 0 : -1}
             >
               <a
-                href={isHomePage ? "#kontakt" : "/#kontakt"}
-                onClick={(e) => handleNavClick(e, isHomePage ? "#kontakt" : "/#kontakt")}
+                href={isHomePage ? "#kontakt" : `${homeHref}#kontakt`}
+                onClick={(e) => handleNavClick(e, isHomePage ? "#kontakt" : `${homeHref}#kontakt`)}
               >
                 {t("nav.cta")}
               </a>

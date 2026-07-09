@@ -1,6 +1,8 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useContext, useEffect, type ReactNode } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { localeFromPathname, localizedPath, enPublicToInternal, isBlogContentPath } from "@/lib/i18n"
 
 type Language = "pl" | "en"
 
@@ -928,28 +930,32 @@ const translations = {
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("pl")
+  const pathname = usePathname() || "/"
+  const router = useRouter()
+
+  // Language is derived from the URL (PL at root, EN under /en) — deterministic
+  // across SSR/hydration, no cookie/localStorage flash.
+  const language: Language = localeFromPathname(pathname)
 
   useEffect(() => {
-    const saved = localStorage.getItem("language") as Language
-    if (saved && (saved === "pl" || saved === "en")) {
-      setLanguageState(saved)
-      document.documentElement.lang = saved
-    } else {
-      const browserLang = navigator.language || navigator.languages?.[0] || "pl"
-      const detected: Language = browserLang.startsWith("pl") ? "pl" : "en"
-      setLanguageState(detected)
-      document.documentElement.lang = detected
-      document.cookie = `language=${detected}; path=/; max-age=31536000; SameSite=Lax`
-    }
-  }, [])
+    document.documentElement.lang = language
+    // Keep a cookie hint for any non-navigational server reads / analytics.
+    document.cookie = `language=${language}; path=/; max-age=31536000; SameSite=Lax`
+  }, [language])
 
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang)
-    localStorage.setItem("language", lang)
+    if (lang === language) return
+    // Map the current public path to the internal base path, then to the target locale's public path.
+    const stripped = language === "en" ? pathname.replace(/^\/en/, "") || "/" : pathname
+    const internalBase = language === "en" ? enPublicToInternal(stripped) : stripped
+    // Blog articles/categories have language-native slugs (separate Sanity docs) that don't
+    // translate 1:1, so switching language there would produce a non-existent URL (404).
+    // Fall back to the blog index in the target language instead of guessing a slug.
+    const target = isBlogContentPath(internalBase)
+      ? localizedPath("/blog", lang)
+      : localizedPath(internalBase, lang)
     document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`
-    document.documentElement.lang = lang
-    window.location.reload()
+    router.push(target)
   }
 
   const t = (key: string): string => {

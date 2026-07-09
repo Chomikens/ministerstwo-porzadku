@@ -1,6 +1,6 @@
 "use client"
 
-import Link from "next/link"
+import Link from "@/components/ui/locale-link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { BlogCard } from "@/components/blog/blog-card"

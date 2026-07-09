@@ -7,6 +7,7 @@ import { useLanguage } from "@/contexts/language-context"
 import { useRouter } from "next/navigation"
 import type { ServiceData, ServiceIconName } from "@/lib/services-data"
 import { Breadcrumbs } from "@/components/breadcrumbs"
+import { localizedPath } from "@/lib/i18n"
 
 const iconMap: Record<ServiceIconName, typeof Home> = {
   Home,
@@ -21,7 +22,7 @@ function ServiceIcon({ iconName }: { iconName: ServiceIconName }) {
 }
 
 export function ServiceDetail({ service }: { service: ServiceData }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const router = useRouter()
   const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -48,7 +49,7 @@ export function ServiceDetail({ service }: { service: ServiceData }) {
   }, [])
 
   const handleBookConsultation = () => {
-    router.push("/#kontakt")
+    router.push(`${localizedPath("/", language)}#kontakt`)
   }
 
   return (

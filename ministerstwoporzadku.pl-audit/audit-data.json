@@ -1,0 +1,161 @@
+{
+  "summary": {
+    "health_score": 70,
+    "business_type": "Local Service — Professional Organizer / Decluttering (Service-Area Business, Warsaw)",
+    "domain": "ministerstwoporzadku.pl",
+    "audited": "2026-07-09",
+    "top_findings": [
+      "Fabricated aggregateRating (5.0, 24 reviews) shipped site-wide with no reviews on the page (testimonials section commented out) — schema policy risk",
+      "hreflang en-US points to /en which returns 404",
+      "Four /uslugi/* service pages are indexable but missing from sitemap.xml",
+      "Sanity Studio /studio is publicly indexable (index, follow)",
+      "FAQPage + aggregateRating + homepage breadcrumb leak onto every page via global layout"
+    ],
+    "quick_wins": [
+      "Remove or replace placeholder google-site-verification token",
+      "Add /uslugi/* and /blog/kategoria/* to app/sitemap.ts",
+      "Remove aggregateRating until real reviews exist",
+      "Remove the en-US -> /en hreflang / alternates.languages",
+      "Add robots noindex to /studio and Disallow: /studio in robots.txt"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 72,
+      "what_works": [
+        "HTTPS enforced; http->https and www->non-www both 308",
+        "Strong security headers (HSTS, CSP, X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy)",
+        "Server-side rendered (not SPA), fully crawlable; Vercel edge cache HIT + Brotli",
+        "Clean robots.txt with sitemap reference; correct 404 handling",
+        "html lang=pl set correctly"
+      ],
+      "findings": [
+        {"title": "Service pages missing from sitemap", "severity": "High", "description": "sitemap.ts outputs only /, /blog, /polityka-prywatnosci + blog posts; the four /uslugi/{slug} pages return 200 and are statically generated but are not listed.", "recommendation": "Add all services slugs and blog category slugs to app/sitemap.ts"},
+        {"title": "hreflang en-US resolves to 404", "severity": "High", "description": "Rendered <link rel=alternate hreflang=en-US href=.../en>; /en returns 404. alternates.languages declares a non-existent English site.", "recommendation": "Remove alternates.languages in layout.tsx until /en exists"},
+        {"title": "Sanity Studio indexable", "severity": "Medium", "description": "/studio returns 200 with meta robots index, follow. CMS admin should not be indexable.", "recommendation": "Add robots noindex to app/studio and Disallow: /studio in robots.ts"},
+        {"title": "Placeholder GSC verification token in production", "severity": "Low", "description": "meta google-site-verification content=your-google-verification-code is live.", "recommendation": "Insert a real token or remove the verification field"},
+        {"title": "Duplicate viewport meta", "severity": "Low", "description": "Two <meta name=viewport> render (manual head tag with maximum-scale=5 + Next default).", "recommendation": "Remove the manual tag; use Next export const viewport"},
+        {"title": "Canonical omits trailing slash", "severity": "Low", "description": "Canonical is https://ministerstwoporzadku.pl while the site serves /.", "recommendation": "Standardize on one form"}
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 68,
+      "what_works": [
+        "Clear Experience/Expertise: named founder, real photo, first-person practitioner voice",
+        "Single blog post is ~1,100 words, in-depth, well-structured, with author bio and internal links",
+        "Coherent local-service homepage narrative (About, process, services, portfolio, contact)"
+      ],
+      "findings": [
+        {"title": "No visible social proof", "severity": "High", "description": "Testimonials component is commented out in app/page.tsx:19; no reviews anywhere on the site. Major trust/E-E-A-T gap and the reason the schema rating is invalid.", "recommendation": "Ship a real testimonials/reviews section"},
+        {"title": "Thin content library (1 article)", "severity": "Medium", "description": "/blog hub has almost no content to rank or build topical authority.", "recommendation": "Publish 6-10 local-intent articles"},
+        {"title": "Weak trust details", "severity": "Medium", "description": "Business email is a personal Gmail; no visible pricing despite Cennik nav label.", "recommendation": "Use a domain email; add price anchors"},
+        {"title": "No dedicated long-form service/about pages beyond templates", "severity": "Low", "description": "/uslugi pages are template-driven; limited unique depth.", "recommendation": "Expand with FAQ, process, local proof"}
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 74,
+      "what_works": [
+        "Unique keyword-targeted title + meta description on home, service, and blog pages",
+        "Exactly one H1 per page; clean blog heading hierarchy",
+        "Keyword-rich local metadata (decluttering warszawa, district names)"
+      ],
+      "findings": [
+        {"title": "Homepage title too long (~84 chars)", "severity": "Medium", "description": "Title truncates in SERP.", "recommendation": "Trim to <=60 chars, lead with primary keyword"},
+        {"title": "H1 is a keyword-less slogan", "severity": "Medium", "description": "<h1>Twoj spokoj zaczyna sie tutaj.</h1> has no target keyword.", "recommendation": "Add a keyword-bearing H2 near the top or blend keyword into H1"},
+        {"title": "Blog metaTitle drops brand, awkward grammar", "severity": "Low", "description": "Organizacja przestrzeni zaplanuj wnetrze przed zabudowa.", "recommendation": "Add brand suffix; smooth grammar"},
+        {"title": "Blog alternates set en -> same Polish URL", "severity": "Low", "description": "Declares English version at the Polish URL.", "recommendation": "Remove until EN exists"}
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 55,
+      "what_works": [
+        "Rich @graph: ProfessionalService+LocalBusiness with geo, areaServed, openingHours, hasOfferCatalog",
+        "Service + Offer on each service page; BlogPosting on posts; WebSite; sameAs to Instagram/TikTok"
+      ],
+      "findings": [
+        {"title": "aggregateRating without reviews (policy violation)", "severity": "High", "description": "ratingValue 5.0 / reviewCount 24 declared with no reviews rendered and no review nodes. Risks manual action or ignored markup.", "recommendation": "Remove aggregateRating until real, visible reviews exist; then add matching review items"},
+        {"title": "Global schema leakage", "severity": "Medium", "description": "FAQPage, aggregateRating, and homepage BreadcrumbList render on every URL (blog/service) from app/layout.tsx, creating context mismatches.", "recommendation": "Move these into the homepage route; give each route its own correct breadcrumb"},
+        {"title": "dateModified hard-set to datePublished", "severity": "Low", "description": "BlogPosting never reflects updates.", "recommendation": "Set dateModified from Sanity _updatedAt"},
+        {"title": "Author is a bare Person name", "severity": "Low", "description": "No @id/url/sameAs weakens author E-E-A-T.", "recommendation": "Link author to a real Person entity"},
+        {"title": "Breadcrumb items use fragment anchors", "severity": "Low", "description": "Breadcrumbs point to /#services rather than pages.", "recommendation": "Point breadcrumbs at real URLs"}
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 78,
+      "what_works": [
+        "Next.js prerender + Vercel edge cache HIT (fast TTFB)",
+        "Font strategy strong for CLS: swap, subset, only used weights, adjustFontFallback",
+        "Hero + logo preloaded with fetchPriority high; preconnect/dns-prefetch; Brotli"
+      ],
+      "findings": [
+        {"title": "Fake responsive hero srcset", "severity": "Medium", "description": "Preload srcset uses ?w= query params on a static /public JPEG; params don't resize, so every device downloads the full image.", "recommendation": "Serve hero via next/image or generate real width variants"},
+        {"title": "No next-gen image formats", "severity": "Low", "description": "Hero JPEG, OG/logo PNG.", "recommendation": "Convert to WebP/AVIF"},
+        {"title": "No field CWV data available", "severity": "Info", "description": "Assessment is lab-only; connect GSC/CrUX for field data.", "recommendation": "Connect Search Console"}
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 62,
+      "what_works": [
+        "Server-rendered content readable by AI crawlers without JS",
+        "Clear entity (LocalBusiness), FAQ content, answer-first blog article"
+      ],
+      "findings": [
+        {"title": "No llms.txt", "severity": "Medium", "description": "No /llms.txt summary file.", "recommendation": "Add /llms.txt with services, area, key pages"},
+        {"title": "Small corpus limits citability", "severity": "Medium", "description": "One article limits citable passages and topical authority.", "recommendation": "Expand content cluster"},
+        {"title": "Fabricated rating undermines trust signals", "severity": "Medium", "description": "LLMs increasingly weigh trust; fake rating hurts.", "recommendation": "Fix per schema finding"},
+        {"title": "No extractable review quotes", "severity": "Low", "description": "No plain-text testimonials for AI to cite.", "recommendation": "Ship real testimonial quotes"}
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 80,
+      "what_works": [
+        "100% alt-text coverage across sampled pages (8/8, 3/3, 2/2)",
+        "Hero preloaded; reasonable file sizes (~45KB hero)"
+      ],
+      "findings": [
+        {"title": "OG image is the logo, not a photo", "severity": "Low", "description": "Share image declared 1200x630 but is a logo PNG.", "recommendation": "Design a proper social card with a real photo"},
+        {"title": "Raster images not next-gen", "severity": "Low", "description": "JPEG/PNG instead of WebP/AVIF.", "recommendation": "Adopt next-gen formats via next/image"}
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {"name": "Phase 1: Critical Fixes", "timeframe": "Week 1", "items": [
+        "Remove fabricated aggregateRating (or restore real testimonials + review nodes)",
+        "Remove/fix en-US -> /en hreflang (alternates.languages)",
+        "Add /uslugi/* and /blog/kategoria/* to app/sitemap.ts",
+        "De-index /studio (robots noindex + Disallow: /studio)"
+      ]},
+      {"name": "Phase 2: High-Impact Improvements", "timeframe": "Weeks 2-3", "items": [
+        "Scope FAQPage/aggregateRating/breadcrumb to the homepage route only",
+        "Fix fake hero srcset (serve via next/image)",
+        "Real Search Console verification token + submit sitemap",
+        "Trim homepage title to <=60 chars; add keyword-bearing H2",
+        "De-duplicate viewport meta"
+      ]},
+      {"name": "Phase 3: Content & Authority", "timeframe": "Month 2", "items": [
+        "Publish 6-10 local-intent blog posts",
+        "Expand /uslugi pages with FAQ, process, before/after, price anchors",
+        "Add real testimonials + linked author Person entity",
+        "Switch to a domain email"
+      ]},
+      {"name": "Phase 4: Monitoring & Iteration", "timeframe": "Ongoing", "items": [
+        "Connect GSC + GA4; monitor /uslugi indexation and CWV field data",
+        "Add /llms.txt; keep content answer-first for AI citation",
+        "Set dateModified from Sanity _updatedAt; refresh posts ~90 days",
+        "Build local citations + pursue reviews to legitimately restore rating"
+      ]}
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}

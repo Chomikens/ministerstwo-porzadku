@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
-import Link from "next/link"
+import Link from "@/components/ui/locale-link"
 import type { Metadata } from "next"
 import { ArrowLeft } from "lucide-react"
 import { Navigation } from "@/components/navigation"
@@ -43,13 +43,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: {
-      canonical: `${baseUrl}/blog/kategoria/${categorySlug}`,
-      languages: {
-        pl: `${baseUrl}/blog/kategoria/${categorySlug}`,
-        en: `${baseUrl}/blog/kategoria/${categorySlug}`,
-      },
-    },
+    // Self-referencing canonical dostarcza layout na podstawie locale/ścieżki.
     openGraph: {
       title,
       description,

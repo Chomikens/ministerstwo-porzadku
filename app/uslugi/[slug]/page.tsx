@@ -4,6 +4,8 @@ import { ServiceDetail } from "@/components/service-detail"
 import { services, getServiceBySlug } from "@/lib/services-data"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import { getRequestLocale } from "@/lib/i18n-server"
+import { localizedPath, type Locale } from "@/lib/i18n"
 
 const BASE_URL = "https://ministerstwoporzadku.pl"
 
@@ -74,6 +76,54 @@ const seoData: Record<
   },
 }
 
+// English SEO data per service (EN tree served under /en/services/<en-slug>)
+const seoDataEn: typeof seoData = {
+  "projektowa-organizacja-przestrzeni": {
+    title: "Space Organization Design | Ministry of Order",
+    description:
+      "A functional home starts with a thoughtful plan. Professional space organization in Warsaw – audit, design and implementation of an organization system.",
+    keywords:
+      "space organization design, home organization warsaw, professional organizer warsaw, organization system, space audit",
+    ogImage: seoData["projektowa-organizacja-przestrzeni"].ogImage,
+    priceRange: "PLN",
+    serviceType: "Space Organization Design",
+  },
+  "decluttering-i-organizacja-przestrzeni": {
+    title: "Decluttering & Space Organization | Ministry of Order",
+    description:
+      "New order, new energy, new space. Comprehensive decluttering and space organization in Warsaw – selection, tidying and a new system.",
+    keywords:
+      "decluttering warsaw, space organization, home tidying, minimalism, professional organizer, deep cleaning",
+    ogImage: seoData["decluttering-i-organizacja-przestrzeni"].ogImage,
+    priceRange: "PLN",
+    serviceType: "Decluttering and Space Organization",
+  },
+  "wsparcie-w-przeprowadzce": {
+    title: "Moving Support | Ministry of Order",
+    description:
+      "Your fresh start in a perfectly organized space. Comprehensive moving support in Warsaw – packing, organization and unpacking.",
+    keywords:
+      "moving support warsaw, move organization, packing for a move, unpacking, professional organizer moving, new apartment organization",
+    ogImage: seoData["wsparcie-w-przeprowadzce"].ogImage,
+    priceRange: "PLN",
+    serviceType: "Moving Support",
+  },
+  "konsultacja-online": {
+    title: "Online / In-Person Consultation | Ministry of Order",
+    description:
+      "A planned space you can implement yourself. Online or in-person consultation with a professional organizer – an action plan and support.",
+    keywords:
+      "online organization consultation, in-person consultation, professional organizer online, space plan, home organization advice",
+    ogImage: seoData["konsultacja-online"].ogImage,
+    priceRange: "PLN",
+    serviceType: "Online / In-Person Consultation",
+  },
+}
+
+function getSeo(slug: string, locale: Locale) {
+  return (locale === "en" ? seoDataEn : seoData)[slug]
+}
+
 // Generate metadata for each service page
 export async function generateMetadata({
   params,
@@ -81,30 +131,30 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
+  const locale = await getRequestLocale()
   const service = getServiceBySlug(slug)
-  const seo = seoData[slug]
+  const seo = getSeo(slug, locale)
 
   if (!service || !seo) {
     return {
-      title: "Us\u0142uga nie znaleziona | Ministerstwo Porz\u0105dku",
+      title: locale === "en" ? "Service not found | Ministry of Order" : "Us\u0142uga nie znaleziona | Ministerstwo Porz\u0105dku",
     }
   }
 
-  const canonicalUrl = `${BASE_URL}/uslugi/${slug}`
+  const canonicalUrl = `${BASE_URL}${localizedPath(`/uslugi/${slug}`, locale)}`
 
   return {
     title: seo.title,
     description: seo.description,
     keywords: seo.keywords,
     authors: [{ name: "Ministerstwo Porz\u0105dku" }],
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    // canonical + hreflang (PL\u2194EN, przet\u0142umaczone slugi) dostarcza layout na
+    // podstawie locale i \u015bcie\u017cki bazowej z middleware.
     openGraph: {
       title: seo.title,
       description: seo.description,
       type: "website",
-      locale: "pl_PL",
+      locale: locale === "en" ? "en_US" : "pl_PL",
       siteName: "Ministerstwo Porz\u0105dku",
       url: canonicalUrl,
       images: [
@@ -142,14 +192,15 @@ export default async function ServicePage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
+  const locale = await getRequestLocale()
   const service = getServiceBySlug(slug)
-  const seo = seoData[slug]
+  const seo = getSeo(slug, locale)
 
   if (!service || !seo) {
     notFound()
   }
 
-  const canonicalUrl = `${BASE_URL}/uslugi/${slug}`
+  const canonicalUrl = `${BASE_URL}${localizedPath(`/uslugi/${slug}`, locale)}`
 
   // JSON-LD structured data: Service + BreadcrumbList
   const structuredData = {

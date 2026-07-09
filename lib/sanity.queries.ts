@@ -30,6 +30,7 @@ export interface BlogPost {
   _createdAt: string
   readingTime?: number
   language: string
+  hidden?: boolean
   seo?: {
     metaTitle?: string
     metaDescription?: string
@@ -37,7 +38,7 @@ export interface BlogPost {
 }
 
 export async function getAllPosts(language = "pl"): Promise<BlogPost[]> {
-  const query = `*[_type == "blogPost" && language == $language] | order(publishedAt desc) {
+  const query = `*[_type == "blogPost" && language == $language && hidden != true] | order(publishedAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -74,6 +75,7 @@ export async function getAllPosts(language = "pl"): Promise<BlogPost[]> {
 export const getPostBySlug = cache(async function getPostBySlug(slug: string, language = "pl"): Promise<BlogPost | null> {
   const query = `*[_type == "blogPost" && slug.current == $slug && language == $language][0] {
     _id,
+    hidden,
     title,
     "slug": slug.current,
     excerpt,
@@ -109,7 +111,7 @@ export const getPostBySlug = cache(async function getPostBySlug(slug: string, la
 })
 
 export async function getPostsByCategory(categorySlug: string, language = "pl"): Promise<BlogPost[]> {
-  const query = `*[_type == "blogPost" && category->slug.current == $categorySlug && language == $language] | order(publishedAt desc) {
+  const query = `*[_type == "blogPost" && category->slug.current == $categorySlug && language == $language && hidden != true] | order(publishedAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -173,7 +175,7 @@ export async function getRelatedPosts(
   language = "pl",
   limit = 3,
 ): Promise<BlogPost[]> {
-  const query = `*[_type == "blogPost" && _id != $postId && category._ref == $categoryId && language == $language] | order(publishedAt desc) [0...$limit] {
+  const query = `*[_type == "blogPost" && _id != $postId && category._ref == $categoryId && language == $language && hidden != true] | order(publishedAt desc) [0...$limit] {
     _id,
     title,
     "slug": slug.current,

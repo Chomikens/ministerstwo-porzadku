@@ -1,6 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Playfair_Display, Montserrat } from "next/font/google"
+import { buildAlternates, OG_LOCALE, type Locale } from "@/lib/i18n"
+import { getRequestLocale, getBasePathname } from "@/lib/i18n-server"
 import { ConditionalAnalytics } from "@/components/conditional-analytics"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { LanguageProvider } from "@/contexts/language-context"
@@ -30,64 +32,78 @@ const montserrat = Montserrat({
   adjustFontFallback: true, // Improves CLS by matching fallback font metrics
 })
 
-export const metadata: Metadata = {
-  title: "Ministerstwo Porządku | Decluttering Warszawa | Organizacja Przestrzeni Dom i Biuro",
-  description:
-    "Profesjonalny decluttering i organizacja przestrzeni w Warszawie. Przywróć porządek w domu i biurze. Konsultacje, przeprowadzki, projektowanie. Umów darmową konsultację!",
-  keywords:
-    "decluttering warszawa, organizacja przestrzeni warszawa, porządek w domu, professional organizer, minimalizm, organizacja biura, sprzątanie, porządkowanie, przeprowadzka warszawa, decluttering mokotów, decluttering śródmieście",
-  authors: [{ name: "Ministerstwo Porządku" }],
-  openGraph: {
-    title: "Ministerstwo Porządku | Decluttering Warszawa",
+const META_BY_LOCALE: Record<Locale, { title: string; description: string; ogTitle: string }> = {
+  pl: {
+    title: "Ministerstwo Porządku | Decluttering Warszawa | Organizacja Przestrzeni Dom i Biuro",
     description:
-      "Profesjonalny decluttering i organizacja przestrzeni w Warszawie. Przywróć porządek w domu i biurze. Umów darmową konsultację!",
-    type: "website",
-    locale: "pl_PL",
-    siteName: "Ministerstwo Porządku",
-    images: [
-      {
-        url: "/ministerstwo-porzadku-logo.png",
-        width: 1200,
-        height: 630,
-        alt: "Ministerstwo Porządku - Profesjonalna organizacja przestrzeni",
-      },
-    ],
+      "Profesjonalny decluttering i organizacja przestrzeni w Warszawie. Przywróć porządek w domu i biurze. Konsultacje, przeprowadzki, projektowanie. Umów darmową konsultację!",
+    ogTitle: "Ministerstwo Porządku | Decluttering Warszawa",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Ministerstwo Porządku | Decluttering Warszawa",
+  en: {
+    title: "Ministry of Order | Decluttering Warsaw | Home & Office Space Organization",
     description:
-      "Profesjonalny decluttering i organizacja przestrzeni w Warszawie. Przywróć porządek w domu i biurze. Umów darmową konsultację!",
-    images: ["/ministerstwo-porzadku-logo.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  verification: {
-    google: "your-google-verification-code",
-  },
-  alternates: {
-    canonical: "https://ministerstwoporzadku.pl",
-    languages: {
-      "pl-PL": "https://ministerstwoporzadku.pl",
-      "en-US": "https://ministerstwoporzadku.pl/en",
-    },
+      "Professional decluttering and space organization in Warsaw. Bring order back to your home and office. Consultations, moving, design. Book a free consultation!",
+    ogTitle: "Ministry of Order | Decluttering Warsaw",
   },
 }
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  const basePath = await getBasePathname()
+  const meta = META_BY_LOCALE[locale]
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    keywords:
+      "decluttering warszawa, organizacja przestrzeni warszawa, porządek w domu, professional organizer, minimalizm, organizacja biura, sprzątanie, porządkowanie, przeprowadzka warszawa, decluttering mokotów, decluttering śródmieście",
+    authors: [{ name: "Ministerstwo Porządku" }],
+    metadataBase: new URL("https://ministerstwoporzadku.pl"),
+    openGraph: {
+      title: meta.ogTitle,
+      description: meta.description,
+      type: "website",
+      locale: OG_LOCALE[locale],
+      siteName: "Ministerstwo Porządku",
+      images: [
+        {
+          url: "/ministerstwo-porzadku-logo.png",
+          width: 1200,
+          height: 630,
+          alt: "Ministerstwo Porządku - Profesjonalna organizacja przestrzeni",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.ogTitle,
+      description: meta.description,
+      images: ["/ministerstwo-porzadku-logo.png"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    // Canonical + hreflang are derived from the current locale and the internal
+    // base path (set by middleware), so every page self-references correctly and
+    // service/static pages emit proper PL↔EN pairs. Pages may still override.
+    alternates: buildAlternates(basePath, locale),
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getRequestLocale()
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -163,13 +179,9 @@ export default function RootLayout({
         },
         currenciesAccepted: "PLN",
         paymentAccepted: "Gotówka, Przelew",
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: "5.0",
-          reviewCount: "24",
-          bestRating: "5",
-          worstRating: "1",
-        },
+        // aggregateRating usunięte świadomie: brak realnych, widocznych opinii na stronie.
+        // Dodać ponownie dopiero, gdy pojawią się prawdziwe recenzje (np. z wizytówki Google)
+        // wraz z odpowiadającymi im węzłami `review`. Fałszywy rating narusza politykę Google.
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",
@@ -258,92 +270,11 @@ export default function RootLayout({
         },
         inLanguage: ["pl-PL", "en-US"],
       },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Strona główna",
-            item: "https://ministerstwoporzadku.pl",
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "O mnie",
-            item: "https://ministerstwoporzadku.pl#about",
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: "Usługi",
-            item: "https://ministerstwoporzadku.pl#services",
-          },
-          {
-            "@type": "ListItem",
-            position: 4,
-            name: "Realizacje",
-            item: "https://ministerstwoporzadku.pl#transformations",
-          },
-          {
-            "@type": "ListItem",
-            position: 5,
-            name: "Kontakt",
-            item: "https://ministerstwoporzadku.pl#contact",
-          },
-        ],
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://ministerstwoporzadku.pl/#faq",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Czym jest decluttering?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Decluttering to proces usuwania zbędnych przedmiotów z przestrzeni życiowej, który pomaga stworzyć bardziej funkcjonalny i harmonijny dom. Pomagamy Ci zdecydować, co zachować, a co można oddać lub wyrzucić.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Jak wygląda współpraca z Professional Organizer?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Współpraca zaczyna się od bezpłatnej konsultacji, podczas której omawiamy Twoje potrzeby i cele. Następnie tworzymy plan działania i realizujemy go wspólnie, krok po kroku, aż do osiągnięcia wymarzonej przestrzeni.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Jak długo trwa organizacja przestrzeni?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Czas realizacji zależy od wielkości przestrzeni i zakresu prac. Mała szafa może zająć 2-3 godziny, podczas gdy pełna organizacja domu to kilka dni pracy. Wszystko ustalimy podczas wstępnej konsultacji.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Czy obsługujecie całą Warszawę?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Tak, obsługujemy całą Warszawę i okolice do 50km, w tym dzielnice: Mokotów, Śródmieście, Ochota, Wola, Żoliborz, Praga i inne.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Czy potrzebuję być obecny podczas organizacji przestrzeni?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Tak, Twoja obecność jest ważna, szczególnie podczas declutteringu. Wspólnie podejmujemy decyzje o tym, co zachować. Możemy jednak pracować samodzielnie przy organizowaniu już posegregowanych rzeczy, jeśli wolisz.",
-            },
-          },
-        ],
-      },
     ],
   }
 
   return (
-    <html lang="pl" className={`${playfairDisplay.variable} ${montserrat.variable}`} suppressHydrationWarning>
+    <html lang={locale} className={`${playfairDisplay.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <link

@@ -11,10 +11,11 @@ import { useLanguage } from "@/contexts/language-context"
 import Image from "next/image"
 import { sendContactEmail } from "@/app/actions/send-email"
 import { useContactForm } from "@/contexts/contact-form-context"
+import { localizedPath } from "@/lib/i18n"
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const { isOpen: showPopup, openContactForm, closeContactForm } = useContactForm()
   const [currentStep, setCurrentStep] = useState(1)
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 })
@@ -648,7 +649,7 @@ export function Contact() {
                       <label htmlFor="gdprConsent" className="text-sm text-foreground/80 leading-relaxed">
                         {t("contact.form.gdpr")}{" "}
                         <a
-                          href="/polityka-prywatnosci"
+                          href={localizedPath("/polityka-prywatnosci", language)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-accent hover:underline"
