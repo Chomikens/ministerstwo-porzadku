@@ -1,0 +1,38 @@
+# Ministerstwo Porządku
+
+> Profesjonalne usługi declutteringu i organizacji przestrzeni dla domu i biura w Warszawie. Pomagamy przekształcić chaos w harmonię — od konsultacji, przez projektowanie funkcjonalnej przestrzeni, po wsparcie w przeprowadzkach. Założycielka: Karolina Kalinowska, Professional Organizer.
+
+Ministerstwo Porządku (ang. Ministry of Order) to marka usług organizacji przestrzeni działająca w Warszawie i okolicach (do 50 km). Obsługiwane dzielnice: Mokotów, Śródmieście, Ochota, Wola, Żoliborz, Praga. Strona jest dwujęzyczna: polska (domyślna) pod adresem głównym oraz angielska pod prefiksem `/en`.
+
+- Slogan: „Przekształcamy chaos w harmonię"
+- Telefon: +48 501 733 731
+- E-mail: Karolinap.kalinowska@gmail.com
+- Godziny: pon.–pt. 09:00–18:00, sob. 10:00–14:00
+- Instagram: https://www.instagram.com/ministerstwo.porzadku
+- TikTok: https://www.tiktok.com/@ministerstwo.porzadku
+
+## Usługi (PL)
+
+- [Projektowa organizacja przestrzeni](https://ministerstwoporzadku.pl/uslugi/projektowa-organizacja-przestrzeni): Funkcjonalny dom zaczyna się od przemyślanego projektu — kompleksowe projektowanie organizacji przestrzeni.
+- [Decluttering i organizacja przestrzeni](https://ministerstwoporzadku.pl/uslugi/decluttering-i-organizacja-przestrzeni): Kompleksowa usługa łącząca decluttering z pełną organizacją przestrzeni w domu.
+- [Wsparcie w przeprowadzce](https://ministerstwoporzadku.pl/uslugi/wsparcie-w-przeprowadzce): Organizacja przeprowadzki od declutteringu po pełne urządzenie nowego domu.
+- [Konsultacja online / stacjonarnie](https://ministerstwoporzadku.pl/uslugi/konsultacja-online): Zaplanowana przestrzeń z profesjonalnym wsparciem — online lub stacjonarnie (cała Polska).
+
+## Blog i zasoby (PL)
+
+- [Blog](https://ministerstwoporzadku.pl/blog): Porady o declutteringu, organizacji domu, minimalizmie i utrzymaniu porządku.
+- [Polityka prywatności](https://ministerstwoporzadku.pl/polityka-prywatnosci): Zasady przetwarzania danych osobowych.
+
+## English
+
+- [Homepage](https://ministerstwoporzadku.pl/en): Professional decluttering and space organization in Warsaw.
+- [Space organization design](https://ministerstwoporzadku.pl/en/services/space-organization-design): Comprehensive design of a functional, well-organized home.
+- [Decluttering and organization](https://ministerstwoporzadku.pl/en/services/decluttering-and-organization): Full service combining decluttering with complete space organization.
+- [Moving support](https://ministerstwoporzadku.pl/en/services/moving-support): End-to-end move organization, from decluttering to setting up the new home.
+- [Online consultation](https://ministerstwoporzadku.pl/en/services/online-consultation): Planned space with professional support — online or on-site.
+- [Blog](https://ministerstwoporzadku.pl/en/blog): Articles on decluttering, home organization, and minimalism.
+
+## Optional
+
+- [Sitemap XML](https://ministerstwoporzadku.pl/sitemap.xml): Pełna lista adresów URL strony (PL i EN).
+- [Robots.txt](https://ministerstwoporzadku.pl/robots.txt): Zasady dla robotów wyszukiwarek.
