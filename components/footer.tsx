@@ -143,6 +143,17 @@ export function Footer() {
           {/* Social Media & Copyright */}
           <div className="pt-8 border-t border-primary-foreground/20 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-primary-foreground/90">© 2025 Ministerstwo Porządku. {t("footer.rights")}</p>
+            <p className="text-sm text-primary-foreground/70 text-center sm:text-right">
+              {language === "en" ? "Order on this site kept by " : "Za porządek na tej stronie odpowiada "}
+              <a
+                href="https://www.linkedin.com/in/dominik-kantorowicz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-foreground/90 hover:text-accent underline underline-offset-2 transition-smooth"
+              >
+                Dominik Kantorowicz
+              </a>
+            </p>
           </div>
         </div>
       </footer>
