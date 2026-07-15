@@ -31,6 +31,7 @@ export interface BlogPost {
   readingTime?: number
   language: string
   hidden?: boolean
+  translationId?: string
   seo?: {
     metaTitle?: string
     metaDescription?: string
@@ -46,6 +47,7 @@ export async function getAllPosts(language = "pl"): Promise<BlogPost[]> {
     mainImage,
     body,
     language,
+    translationId,
     category->{
       _id,
       title,
@@ -82,6 +84,7 @@ export const getPostBySlug = cache(async function getPostBySlug(slug: string, la
     mainImage,
     body,
     language,
+    translationId,
     category->{
       _id,
       title,
@@ -109,6 +112,19 @@ export const getPostBySlug = cache(async function getPostBySlug(slug: string, la
     readingTime: calculateReadingTime(JSON.stringify(post.body)),
   }
 })
+
+/**
+ * Resolve the slug of the sibling-language version of a post, matched via the shared
+ * `translationId`. Returns null when there is no linked, published counterpart.
+ */
+export async function getTranslationSlug(
+  translationId: string | undefined,
+  targetLanguage: string,
+): Promise<string | null> {
+  if (!translationId) return null
+  const query = `*[_type == "blogPost" && translationId == $translationId && language == $targetLanguage && hidden != true][0].slug.current`
+  return client.fetch<string | null>(query, { translationId, targetLanguage })
+}
 
 export async function getPostsByCategory(categorySlug: string, language = "pl"): Promise<BlogPost[]> {
   const query = `*[_type == "blogPost" && category->slug.current == $categorySlug && language == $language && hidden != true] | order(publishedAt desc) {

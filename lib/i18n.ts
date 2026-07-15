@@ -100,3 +100,26 @@ export function buildAlternates(basePath: string, locale: Locale) {
     },
   }
 }
+
+/**
+ * Alternates for a single blog article. Blog PL/EN slugs are content-native and differ
+ * per document, so an hreflang pair is emitted only when a linked sibling exists (matched
+ * via the shared `translationId`). Otherwise a self-referencing canonical only.
+ */
+export function buildBlogAlternates(locale: Locale, ownSlug: string, siblingSlug?: string | null) {
+  const ownUrl = locale === "en" ? `${BASE_URL}/en/blog/${ownSlug}` : `${BASE_URL}/blog/${ownSlug}`
+  if (!siblingSlug) return { canonical: ownUrl }
+
+  const plSlug = locale === "pl" ? ownSlug : siblingSlug
+  const enSlug = locale === "en" ? ownSlug : siblingSlug
+  const plUrl = `${BASE_URL}/blog/${plSlug}`
+  const enUrl = `${BASE_URL}/en/blog/${enSlug}`
+  return {
+    canonical: ownUrl,
+    languages: {
+      "pl-PL": plUrl,
+      "en-US": enUrl,
+      "x-default": plUrl,
+    },
+  }
+}

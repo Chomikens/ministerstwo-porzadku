@@ -78,7 +78,7 @@ const translations = {
     "about.credentials": "Kwalifikacje i\u00A0doświadczenie",
     "about.credential1": "Certyfikat ukończenia kursu Architektury Porządku u Agnieszki Witkowskiej",
     "about.credential2": "Ponad 5\u00A0lat doświadczenia w\u00A0organizacji przestrzeni",
-    "about.credential3": "Ponad 200 zrealizowanych projektów",
+    "about.credential3": "25 zrealizowanych projektów",
     "about.credential4": "Specjalizacja w\u00A0declutteringu i\u00A0minimalizmie",
 
     // Services
@@ -538,7 +538,7 @@ const translations = {
     "about.credentials": "Qualifications and Experience",
     "about.credential1": "Certificate of completion of the Architecture of Order course with Agnieszka Witkowska",
     "about.credential2": "Over 5 years of experience in space organization",
-    "about.credential3": "Over 200 completed projects",
+    "about.credential3": "25 completed projects",
     "about.credential4": "Specialization in decluttering and minimalism",
 
     // Services
@@ -945,16 +945,36 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = (lang: Language) => {
     if (lang === language) return
-    // Map the current public path to the internal base path, then to the target locale's public path.
+    document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`
+
+    // Prefer the page's own hreflang alternate for the target locale. This covers blog
+    // articles whose PL/EN slugs differ (separate Sanity docs) but are linked via
+    // `translationId` — the switch lands on the matching article, not a fallback page.
+    if (typeof document !== "undefined") {
+      const hreflang = lang === "en" ? "en-US" : "pl-PL"
+      const href = document
+        .querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`)
+        ?.getAttribute("href")
+      if (href) {
+        try {
+          const url = new URL(href, window.location.origin)
+          if (url.origin === window.location.origin) {
+            router.push(url.pathname + url.search)
+            return
+          }
+        } catch {
+          // fall through to path mapping
+        }
+      }
+    }
+
+    // Fallback: map the current public path to the target locale. Blog articles/categories
+    // with no linked translation fall back to the blog index (avoids guessing a 404 slug).
     const stripped = language === "en" ? pathname.replace(/^\/en/, "") || "/" : pathname
     const internalBase = language === "en" ? enPublicToInternal(stripped) : stripped
-    // Blog articles/categories have language-native slugs (separate Sanity docs) that don't
-    // translate 1:1, so switching language there would produce a non-existent URL (404).
-    // Fall back to the blog index in the target language instead of guessing a slug.
     const target = isBlogContentPath(internalBase)
       ? localizedPath("/blog", lang)
       : localizedPath(internalBase, lang)
-    document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`
     router.push(target)
   }
 

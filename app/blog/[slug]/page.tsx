@@ -12,8 +12,9 @@ import { BlogContent } from "@/components/blog/blog-content"
 import { CategoryBadge } from "@/components/blog/category-badge"
 import { ReadingTime } from "@/components/blog/reading-time"
 import { RelatedPosts } from "@/components/blog/related-posts"
-import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/sanity.queries"
+import { getPostBySlug, getAllPosts, getRelatedPosts, getTranslationSlug } from "@/lib/sanity.queries"
 import { urlFor } from "@/lib/sanity"
+import { buildBlogAlternates, type Locale } from "@/lib/i18n"
 import { getLanguage } from "@/lib/get-language"
 import { Contact } from "@/components/contact"
 import { Breadcrumbs } from "@/components/breadcrumbs"
@@ -50,12 +51,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const metaDescription = post.seo?.metaDescription || post.excerpt
     const imageUrl = post.mainImage ? urlFor(post.mainImage).width(1200).height(630).url() : undefined
 
+    // hreflang PL↔EN: emit a pair only when a linked sibling (same translationId) exists.
+    const siblingSlug = await getTranslationSlug(post.translationId, language === "pl" ? "en" : "pl")
+    const selfUrl = language === "en" ? `${baseUrl}/en/blog/${slug}` : `${baseUrl}/blog/${slug}`
+
     return {
       title: metaTitle,
       description: metaDescription,
       // Ukryte szkice: noindex/nofollow (URL działa do podglądu, ale wyszukiwarki go nie indeksują).
       robots: post.hidden ? { index: false, follow: false } : undefined,
-      // Self-referencing canonical dostarcza layout (slugi PL/EN różnią się per dokument Sanity).
+      // Canonical + hreflang PL↔EN (para tylko gdy istnieje powiązana wersja przez translationId).
+      alternates: buildBlogAlternates(language as Locale, slug, siblingSlug),
       openGraph: {
         title: metaTitle,
         description: metaDescription,
@@ -63,7 +69,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         publishedTime: post.publishedAt,
         authors: post.author?.name ? [post.author.name] : undefined,
         images: imageUrl ? [{ url: imageUrl }] : undefined,
-        url: `${baseUrl}/blog/${slug}`,
+        url: selfUrl,
       },
       twitter: {
         card: "summary_large_image",

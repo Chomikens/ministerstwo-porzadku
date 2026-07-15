@@ -26,8 +26,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...bilingual("/polityka-prywatnosci", 0.5, "monthly"),
   ]
 
-  // Blog posts & categories are language-native content (separate Sanity docs
-  // with their own slugs), so they are listed per-language without hreflang pairs.
+  // Blog posts & categories are language-native content (separate Sanity docs with
+  // their own slugs). Posts linked across languages via `translationId` get an hreflang
+  // pair; unpaired posts are listed per-language without pairs.
   const [postsPl, postsEn, categoriesPl, categoriesEn] = await Promise.all([
     getAllPosts("pl"),
     getAllPosts("en"),
@@ -35,9 +36,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getAllCategories("en"),
   ])
 
+  const pairByTid: Record<string, { pl?: string; en?: string }> = {}
+  for (const p of postsPl) if (p.translationId) (pairByTid[p.translationId] ??= {}).pl = p.slug
+  for (const p of postsEn) if (p.translationId) (pairByTid[p.translationId] ??= {}).en = p.slug
+
+  const postLanguages = (translationId?: string) => {
+    const pair = translationId ? pairByTid[translationId] : undefined
+    if (!pair || !pair.pl || !pair.en) return undefined
+    return { pl: `${BASE_URL}/blog/${pair.pl}`, en: `${BASE_URL}/en/blog/${pair.en}` }
+  }
+
+  const postEntry = (url: string, translationId?: string): Entry => {
+    const languages = postLanguages(translationId)
+    return {
+      url,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+      ...(languages ? { alternates: { languages } } : {}),
+    }
+  }
+
   const postUrls: Entry[] = [
-    ...postsPl.map((p) => ({ url: `${BASE_URL}/blog/${p.slug}`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 })),
-    ...postsEn.map((p) => ({ url: `${BASE_URL}/en/blog/${p.slug}`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 })),
+    ...postsPl.map((p) => postEntry(`${BASE_URL}/blog/${p.slug}`, p.translationId)),
+    ...postsEn.map((p) => postEntry(`${BASE_URL}/en/blog/${p.slug}`, p.translationId)),
   ]
 
   const categoryUrls: Entry[] = [
