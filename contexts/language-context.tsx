@@ -47,6 +47,7 @@ const translations = {
     "hero.badge": "Profesjonalna organizacja przestrzeni",
     "hero.tagline": "Twój spokój zaczyna się tutaj.",
     "hero.title": "Twój spokój zaczyna się tutaj.",
+    "hero.localHeading": "Decluttering i organizacja przestrzeni w Warszawie",
     "hero.description.brand": "Ministerstwo Porządku",
     "hero.description.rest":
       "to więcej niż organizacja przestrzeni. To sposób na odzyskanie równowagi — w\u00A0domu, w\u00A0myślach, w\u00A0codzienności.",
@@ -507,6 +508,7 @@ const translations = {
     "hero.badge": "Professional space organization",
     "hero.tagline": "Peace starts here.",
     "hero.title": "Peace starts here.",
+    "hero.localHeading": "Decluttering and space organization in Warsaw",
     "hero.description.brand": "Ministry of Order",
     "hero.description.rest":
       "is more than space organization. It's a way to regain balance — at home, in your mind, in everyday life.",

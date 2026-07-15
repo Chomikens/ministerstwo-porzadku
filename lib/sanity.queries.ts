@@ -28,6 +28,7 @@ export interface BlogPost {
   author: Author
   publishedAt: string
   _createdAt: string
+  _updatedAt?: string
   readingTime?: number
   language: string
   hidden?: boolean
@@ -100,6 +101,7 @@ export const getPostBySlug = cache(async function getPostBySlug(slug: string, la
     },
     publishedAt,
     _createdAt,
+    _updatedAt,
     seo
   }`
 

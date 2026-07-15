@@ -126,7 +126,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
       description: post.excerpt,
       image: imageUrl,
       datePublished: post.publishedAt,
-      dateModified: post.publishedAt,
+      dateModified: post._updatedAt || post.publishedAt,
       author: {
         "@type": "Person",
         name: post.author.name,

@@ -42,13 +42,13 @@ const montserrat = Montserrat({
 
 const META_BY_LOCALE: Record<Locale, { title: string; description: string; ogTitle: string }> = {
   pl: {
-    title: "Ministerstwo Porządku | Decluttering Warszawa | Organizacja Przestrzeni Dom i Biuro",
+    title: "Decluttering i organizacja przestrzeni — Warszawa",
     description:
       "Profesjonalny decluttering i organizacja przestrzeni w Warszawie. Przywróć porządek w domu i biurze. Konsultacje, przeprowadzki, projektowanie. Umów darmową konsultację!",
     ogTitle: "Ministerstwo Porządku | Decluttering Warszawa",
   },
   en: {
-    title: "Ministry of Order | Decluttering Warsaw | Home & Office Space Organization",
+    title: "Decluttering & space organization — Warsaw",
     description:
       "Professional decluttering and space organization in Warsaw. Bring order back to your home and office. Consultations, moving, design. Book a free consultation!",
     ogTitle: "Ministry of Order | Decluttering Warsaw",
@@ -284,14 +284,9 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${playfairDisplay.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/images/design-mode/karolina-kalinowska-hero-intro.jpeg"
-          fetchPriority="high"
-          imageSrcSet="/images/design-mode/karolina-kalinowska-hero-intro.jpeg?w=640 640w, /images/design-mode/karolina-kalinowska-hero-intro.jpeg?w=750 750w, /images/design-mode/karolina-kalinowska-hero-intro.jpeg?w=828 828w"
-          imageSizes="(max-width: 768px) 100vw, 50vw"
-        />
+        {/* Hero image preload is handled automatically by next/image `priority` in the
+            homepage <Hero>. A manual srcset here pointed at a static file with ?w= params
+            that don't resize, and preloaded on every route — removed. */}
         <link rel="preload" as="image" href="/ministerstwo-porzadku-logo.png" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />

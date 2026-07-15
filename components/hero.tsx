@@ -81,6 +81,10 @@ export function Hero() {
               {t("hero.title")}
             </h1>
 
+            <h2 className="observe-animation opacity-0 stagger-1 text-lg sm:text-xl font-medium text-accent">
+              {t("hero.localHeading")}
+            </h2>
+
             <p className="observe-animation opacity-0 stagger-2 text-base sm:text-lg text-foreground/70 leading-normal max-w-2xl mx-auto lg:mx-0 text-pretty">
               <strong>{t("hero.description.brand")}</strong> {t("hero.description.rest")}
             </p>
