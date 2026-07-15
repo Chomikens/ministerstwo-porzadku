@@ -945,16 +945,36 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = (lang: Language) => {
     if (lang === language) return
-    // Map the current public path to the internal base path, then to the target locale's public path.
+    document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`
+
+    // Prefer the page's own hreflang alternate for the target locale. This covers blog
+    // articles whose PL/EN slugs differ (separate Sanity docs) but are linked via
+    // `translationId` — the switch lands on the matching article, not a fallback page.
+    if (typeof document !== "undefined") {
+      const hreflang = lang === "en" ? "en-US" : "pl-PL"
+      const href = document
+        .querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`)
+        ?.getAttribute("href")
+      if (href) {
+        try {
+          const url = new URL(href, window.location.origin)
+          if (url.origin === window.location.origin) {
+            router.push(url.pathname + url.search)
+            return
+          }
+        } catch {
+          // fall through to path mapping
+        }
+      }
+    }
+
+    // Fallback: map the current public path to the target locale. Blog articles/categories
+    // with no linked translation fall back to the blog index (avoids guessing a 404 slug).
     const stripped = language === "en" ? pathname.replace(/^\/en/, "") || "/" : pathname
     const internalBase = language === "en" ? enPublicToInternal(stripped) : stripped
-    // Blog articles/categories have language-native slugs (separate Sanity docs) that don't
-    // translate 1:1, so switching language there would produce a non-existent URL (404).
-    // Fall back to the blog index in the target language instead of guessing a slug.
     const target = isBlogContentPath(internalBase)
       ? localizedPath("/blog", lang)
       : localizedPath(internalBase, lang)
-    document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`
     router.push(target)
   }
 
