@@ -83,14 +83,17 @@ export function isBlogContentPath(basePath: string): boolean {
  * self-referencing canonical only (no misleading cross-language pair).
  */
 export function buildAlternates(basePath: string, locale: Locale) {
-  const selfUrl = `${BASE_URL}${localizedPath(basePath, locale)}`
+  // Strip a trailing slash so the root canonical matches the site's no-trailing-slash
+  // convention (BASE_URL, not BASE_URL/) — keeps canonicals consistent across pages.
+  const abs = (loc: Locale) => `${BASE_URL}${localizedPath(basePath, loc)}`.replace(/\/+$/, "") || BASE_URL
+  const selfUrl = abs(locale)
 
   if (isBlogContentPath(basePath)) {
     return { canonical: selfUrl }
   }
 
-  const plUrl = `${BASE_URL}${localizedPath(basePath, "pl")}`
-  const enUrl = `${BASE_URL}${localizedPath(basePath, "en")}`
+  const plUrl = abs("pl")
+  const enUrl = abs("en")
   return {
     canonical: selfUrl,
     languages: {

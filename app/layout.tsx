@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Playfair_Display, Montserrat } from "next/font/google"
 import { buildAlternates, OG_LOCALE, type Locale } from "@/lib/i18n"
 import { getRequestLocale, getBasePathname } from "@/lib/i18n-server"
@@ -11,6 +11,14 @@ import { ContactFormProvider } from "@/contexts/contact-form-context"
 import { BackToTop } from "@/components/back-to-top"
 import { CookieConsentBanner } from "@/components/cookie-consent-banner"
 import "./globals.css"
+
+// Single source of truth for the viewport meta (replaces a manual <meta> that
+// duplicated Next's default). maximum-scale=5 keeps pinch-zoom available.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+}
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin", "latin-ext"],
@@ -276,7 +284,6 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${playfairDisplay.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <link
           rel="preload"
           as="image"
