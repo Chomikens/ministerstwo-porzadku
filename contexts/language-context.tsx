@@ -78,7 +78,7 @@ const translations = {
     "about.credentials": "Kwalifikacje i\u00A0doświadczenie",
     "about.credential1": "Certyfikat ukończenia kursu Architektury Porządku u Agnieszki Witkowskiej",
     "about.credential2": "Ponad 5\u00A0lat doświadczenia w\u00A0organizacji przestrzeni",
-    "about.credential3": "Ponad 200 zrealizowanych projektów",
+    "about.credential3": "25 zrealizowanych projektów",
     "about.credential4": "Specjalizacja w\u00A0declutteringu i\u00A0minimalizmie",
 
     // Services
@@ -538,7 +538,7 @@ const translations = {
     "about.credentials": "Qualifications and Experience",
     "about.credential1": "Certificate of completion of the Architecture of Order course with Agnieszka Witkowska",
     "about.credential2": "Over 5 years of experience in space organization",
-    "about.credential3": "Over 200 completed projects",
+    "about.credential3": "25 completed projects",
     "about.credential4": "Specialization in decluttering and minimalism",
 
     // Services

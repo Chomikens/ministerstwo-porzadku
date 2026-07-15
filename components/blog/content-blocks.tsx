@@ -16,6 +16,11 @@ import {
   FileText,
   ExternalLink,
   Megaphone,
+  Users,
+  Home,
+  Star,
+  TrendingUp,
+  Percent,
 } from "lucide-react"
 import { useState } from "react"
 import Link from "@/components/ui/locale-link"
@@ -471,67 +476,68 @@ export function ChecklistBlock({ value }: any) {
 
 // 8. Enhanced Stat Block with icons, trends, and better visual hierarchy
 export function StatBlock({ value }: any) {
-  // Icon mapping for different stat types
+  // Map each stat type to a matching Lucide icon for a clean, editorial look
   const iconMap: { [key: string]: any } = {
-    users: "👥",
-    homes: "🏠",
-    time: "⏰",
-    satisfaction: "⭐",
-    percentage: "📊",
-    growth: "📈",
-    default: "✨",
+    users: Users,
+    homes: Home,
+    time: Clock,
+    satisfaction: Star,
+    percentage: Percent,
+    growth: TrendingUp,
+    default: Sparkles,
   }
 
-  const icon = value.icon ? iconMap[value.icon] || iconMap.default : iconMap.default
+  const Icon = (value.icon && iconMap[value.icon]) || iconMap.default
 
   return (
-    <div className="my-12 relative">
-      <div className="bg-gradient-to-br from-accent/5 via-secondary/10 to-accent/5 rounded-3xl p-8 md:p-12 border-2 border-accent/20 shadow-lg hover:shadow-xl transition-all duration-300">
-        <div className="flex flex-col md:flex-row items-center gap-8">
-          {/* Icon section */}
+    <figure className="my-12">
+      <div className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/[0.07] via-secondary/10 to-background px-6 py-8 shadow-sm md:px-10 md:py-10">
+        {/* Soft decorative glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-accent/10 blur-3xl"
+        />
+
+        {/* Headline row: icon + number + label */}
+        <div className="relative flex flex-col items-center gap-5 text-center sm:flex-row sm:items-center sm:gap-7 sm:text-left">
           <div className="flex-shrink-0">
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-accent/20 flex items-center justify-center text-5xl md:text-6xl shadow-lg">
-              {icon}
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-accent/15 ring-1 ring-inset ring-accent/25 md:h-20 md:w-20">
+              <Icon className="h-7 w-7 text-accent md:h-9 md:w-9" aria-hidden="true" />
             </div>
           </div>
 
-          {/* Content section */}
-          <div className="flex-1 text-center md:text-left">
-            {/* Main number with trend */}
-            <div className="flex items-center justify-center md:justify-start gap-4 mb-3">
-              <div className="text-5xl md:text-7xl font-bold text-accent leading-none">{value.number}</div>
+          <div className="flex flex-col items-center sm:items-start">
+            <div className="flex items-baseline gap-3">
+              <span className="font-serif text-6xl font-bold leading-none tracking-tight text-accent md:text-7xl">
+                {value.number}
+              </span>
               {value.trend && (
-                <div className="flex flex-col items-center gap-1">
-                  <div className="text-green-600 dark:text-green-500 text-2xl font-bold">↑</div>
-                  <div className="text-xs font-semibold text-green-600 dark:text-green-500 bg-green-500/10 px-2 py-1 rounded-full">
-                    +{value.trend}
-                  </div>
-                </div>
+                <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2.5 py-1 text-sm font-semibold text-green-600 dark:text-green-500">
+                  <TrendingUp className="h-4 w-4" aria-hidden="true" />+{value.trend}
+                </span>
               )}
             </div>
-
-            {/* Label */}
-            <div className="text-xl md:text-3xl font-semibold text-foreground mb-4 leading-tight">{value.label}</div>
-
-            {/* Context */}
-            {value.context && (
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl">{value.context}</p>
-            )}
-
-            {/* Additional metric */}
-            {value.subtext && (
-              <div className="mt-4 inline-flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-full">
-                <span className="text-sm font-medium text-accent">{value.subtext}</span>
-              </div>
-            )}
+            <span className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground md:text-sm">
+              {value.label}
+            </span>
           </div>
         </div>
 
-        {/* Decorative elements */}
-        <div className="absolute top-4 right-4 w-20 h-20 bg-accent/5 rounded-full blur-2xl -z-10" />
-        <div className="absolute bottom-4 left-4 w-16 h-16 bg-secondary/10 rounded-full blur-xl -z-10" />
+        {/* Supporting context, separated by a hairline divider */}
+        {value.context && (
+          <figcaption className="relative mt-6 border-t border-border/60 pt-6 text-base leading-relaxed text-muted-foreground md:text-lg">
+            {value.context}
+          </figcaption>
+        )}
+
+        {/* Optional small footnote */}
+        {value.subtext && (
+          <div className="relative mt-4 inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1.5">
+            <span className="text-sm font-medium text-accent">{value.subtext}</span>
+          </div>
+        )}
       </div>
-    </div>
+    </figure>
   )
 }
 

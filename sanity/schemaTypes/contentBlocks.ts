@@ -278,7 +278,7 @@ export const statBlock = defineType({
       name: "number",
       title: "Liczba",
       type: "string",
-      description: "Główna statystyka (np. '85%', '200+', '3h')",
+      description: "Główna statystyka (np. '85%', '25', '3h')",
       validation: (Rule) => Rule.required(),
     },
     {
