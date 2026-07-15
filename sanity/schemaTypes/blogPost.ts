@@ -165,6 +165,13 @@ export const blogPost = defineType({
       ],
     }),
     defineField({
+      name: "translationId",
+      title: "ID tłumaczenia (hreflang)",
+      type: "string",
+      description:
+        "Wspólny identyfikator łączący wersję PL i EN tego samego artykułu (np. „functional-interior-audit”). Ustaw dokładnie ten sam tekst w obu dokumentach — wtedy strony emitują parę hreflang PL↔EN. Zostaw puste, jeśli artykuł nie ma wersji w drugim języku.",
+    }),
+    defineField({
       name: "hidden",
       title: "Ukryty (szkic / noindex)",
       type: "boolean",
