@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useEffect, type ReactNode } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { localeFromPathname, localizedPath, enPublicToInternal, isBlogContentPath } from "@/lib/i18n"
 
 type Language = "pl" | "en"
@@ -931,7 +931,6 @@ const translations = {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/"
-  const router = useRouter()
 
   // Language is derived from the URL (PL at root, EN under /en) — deterministic
   // across SSR/hydration, no cookie/localStorage flash.
@@ -947,9 +946,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (lang === language) return
     document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`
 
-    // Prefer the page's own hreflang alternate for the target locale. This covers blog
-    // articles whose PL/EN slugs differ (separate Sanity docs) but are linked via
-    // `translationId` — the switch lands on the matching article, not a fallback page.
+    // Resolve the target URL. Prefer the page's own hreflang alternate for the target
+    // locale — this covers blog articles whose PL/EN slugs differ (separate Sanity docs)
+    // but are linked via `translationId`, so the switch lands on the matching article.
+    let target: string | null = null
     if (typeof document !== "undefined") {
       const hreflang = lang === "en" ? "en-US" : "pl-PL"
       const href = document
@@ -958,24 +958,29 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       if (href) {
         try {
           const url = new URL(href, window.location.origin)
-          if (url.origin === window.location.origin) {
-            router.push(url.pathname + url.search)
-            return
-          }
+          if (url.origin === window.location.origin) target = url.pathname + url.search
         } catch {
-          // fall through to path mapping
+          // ignore and fall back to path mapping
         }
       }
     }
 
-    // Fallback: map the current public path to the target locale. Blog articles/categories
-    // with no linked translation fall back to the blog index (avoids guessing a 404 slug).
-    const stripped = language === "en" ? pathname.replace(/^\/en/, "") || "/" : pathname
-    const internalBase = language === "en" ? enPublicToInternal(stripped) : stripped
-    const target = isBlogContentPath(internalBase)
-      ? localizedPath("/blog", lang)
-      : localizedPath(internalBase, lang)
-    router.push(target)
+    if (!target) {
+      // Fallback: map the current public path to the target locale. Blog articles/categories
+      // without a linked translation fall back to the blog index (avoids a 404 slug guess).
+      const stripped = language === "en" ? pathname.replace(/^\/en/, "") || "/" : pathname
+      const internalBase = language === "en" ? enPublicToInternal(stripped) : stripped
+      target = isBlogContentPath(internalBase)
+        ? localizedPath("/blog", lang)
+        : localizedPath(internalBase, lang)
+    }
+
+    // Full-document navigation (not the client router). Locale is derived from a
+    // middleware header-rewrite, so a soft navigation can serve stale, wrong-locale RSC
+    // from the client Router Cache — e.g. EN article cards on the PL blog list, because
+    // /blog and /en/blog resolve to the same underlying route. A real navigation
+    // guarantees the server re-renders in the correct language.
+    window.location.assign(target)
   }
 
   const t = (key: string): string => {

@@ -24,18 +24,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: {
-      canonical: `${baseUrl}/blog`,
-      languages: {
-        pl: `${baseUrl}/blog`,
-        en: `${baseUrl}/blog`,
-      },
-    },
+    // Canonical + hreflang (pl-PL /blog, en-US /en/blog, x-default) are provided by the
+    // root layout via buildAlternates(basePath, locale); no override needed here.
     openGraph: {
       title,
       description,
       type: "website",
-      url: `${baseUrl}/blog`,
+      url: language === "en" ? `${baseUrl}/en/blog` : `${baseUrl}/blog`,
       images: [
         {
           url: `${baseUrl}/images/design-mode/karolina-kalinowska-hero-intro.jpeg`,
