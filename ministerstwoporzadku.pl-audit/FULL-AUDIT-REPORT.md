@@ -37,7 +37,7 @@ However, **three issues do real damage** and should be fixed first: (1) the site
 ### Top 5 Quick Wins
 1. Replace the placeholder `google: "your-google-verification-code"` in `app/layout.tsx` (or remove it) and verify the domain in Search Console.
 2. Add `/uslugi/*` and `/blog/kategoria/*` URLs to `app/sitemap.ts`.
-3. Either restore a real reviews section or remove `aggregateRating` from the schema until reviews exist.
+3. Either restore a real reviews section or remove `aggregateRating` from the schema until reviews exist. *(Correction 2026-07-16: removal is permanent — GBP reviews can't be copied into schema, and self-serving `aggregateRating` on `LocalBusiness` is ignored by Google since 09.2019. See findings/schema.md S1.)*
 4. Fix/remove the `en-US → /en` hreflang and `alternates.languages` block until an English site exists.
 5. Add `robots: { index: false }` to the `/studio` route and `Disallow: /studio` to robots.
 
@@ -107,7 +107,7 @@ However, **three issues do real damage** and should be fixed first: (1) the site
 **Issues**
 | # | Severity | Finding | Fix |
 |---|---|---|---|
-| S1 | **High** | `aggregateRating` (ratingValue 5.0, reviewCount 24) is declared **with zero reviews rendered on the page** and no `review` nodes. Violates Google's [review snippet policy](https://developers.google.com/search/docs/appearance/structured-data/review-snippet) → risk of manual action / ignored markup | Remove `aggregateRating` until real reviews exist and are visible; then add matching `review` items |
+| S1 | **High** | `aggregateRating` (ratingValue 5.0, reviewCount 24) is declared **with zero reviews rendered on the page** and no `review` nodes. Violates Google's [review snippet policy](https://developers.google.com/search/docs/appearance/structured-data/review-snippet) → risk of manual action / ignored markup | Remove `aggregateRating` **permanently** (correction 2026-07-16): first-party-only policy forbids copying GBP reviews into schema, and self-serving ratings on `LocalBusiness` are ignored for rich results since 09.2019. Show testimonials without rating markup |
 | S2 | Med | `FAQPage`, `aggregateRating`, and homepage `BreadcrumbList` are in the **global layout**, so they render on blog posts and service pages where they don't belong (breadcrumb points to homepage sections regardless of the actual page) | Move `FAQPage`/`aggregateRating`/breadcrumb into the homepage route only; give each route its own correct breadcrumb |
 | S3 | Low | `BlogPosting.dateModified` is hard-set equal to `datePublished` | Set `dateModified` from Sanity `_updatedAt` |
 | S4 | Low | `BlogPosting.author` is a bare `Person` name — no `@id`/`url`/`sameAs`, weakening author E-E-A-T | Link author to a real Person entity with bio + profiles |

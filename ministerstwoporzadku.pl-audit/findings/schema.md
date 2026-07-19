@@ -9,6 +9,7 @@
 ```
 But `<Testimonials />` is commented out (`app/page.tsx:19`) and **no reviews render anywhere**. Google's review-snippet policy requires the rated content to be visible on the page; self-serving invisible ratings can trigger a *spammy structured markup* manual action or simply be ignored.
 **Fix:** delete `aggregateRating` until real reviews are shown, then add matching `review` nodes.
+> **Correction (2026-07-16):** removal is **permanent**, not conditional. Google's policy requires first-party ratings (copying GBP reviews into schema is a violation), and since Sept 2019 self-serving `aggregateRating` on `LocalBusiness`/`Organization` is ignored for rich results anyway. Show testimonials on-page without rating markup.
 
 ## 🟠 S2 — Global schema leakage (MEDIUM)
 `FAQPage`, `aggregateRating`, and a homepage-oriented `BreadcrumbList` live in the root layout `@graph`, so they render on **every** URL. Confirmed live: `FAQPage` and `aggregateRating` appear in the HTML of both a blog post and a service page. Blog/service pages therefore carry a breadcrumb pointing at homepage sections (`/#about`, `/#services`).

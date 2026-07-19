@@ -187,9 +187,12 @@ export default async function RootLayout({
         },
         currenciesAccepted: "PLN",
         paymentAccepted: "Gotówka, Przelew",
-        // aggregateRating usunięte świadomie: brak realnych, widocznych opinii na stronie.
-        // Dodać ponownie dopiero, gdy pojawią się prawdziwe recenzje (np. z wizytówki Google)
-        // wraz z odpowiadającymi im węzłami `review`. Fałszywy rating narusza politykę Google.
+        // aggregateRating usunięte NA STAŁE — nie przywracać:
+        // 1) polityka review snippet wymaga opinii first-party — kopiowanie ocen z GBP/Facebooka
+        //    do własnej schemy to naruszenie;
+        // 2) od 09.2019 Google ignoruje "self-serving" aggregateRating/review na
+        //    LocalBusiness/Organization (podmiot oceniany = właściciel strony) — gwiazdki
+        //    w SERP i tak się nie pojawią. Testimonials pokazywać bez markupu ratingu.
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",

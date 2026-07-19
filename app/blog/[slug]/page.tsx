@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { notFound } from "next/navigation"
+import { notFound, unstable_rethrow } from "next/navigation"
 import Image from "next/image"
 import Link from "@/components/ui/locale-link"
 import type { Metadata } from "next"
@@ -44,6 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!post) {
       return {
         title: language === "pl" ? "Artykuł nie znaleziony" : "Article not found",
+        robots: { index: false, follow: false },
       }
     }
 
@@ -279,6 +280,10 @@ async function BlogPostContent({ slug }: { slug: string }) {
       </>
     )
   } catch (error) {
+    // notFound()/redirect() sygnalizują sterowanie przez rzucenie wyjątku Next.js — muszą
+    // przelecieć dalej, inaczej brakujący wpis renderuje soft 404 (HTTP 200 + strona błędu)
+    // zamiast prawdziwego 404. To była przyczyna statusu GSC „Duplikat bez strony kanonicznej".
+    unstable_rethrow(error)
     console.error("[v0] Error rendering blog post:", error)
     return (
       <article className="py-16 px-4 sm:px-6 lg:px-8">

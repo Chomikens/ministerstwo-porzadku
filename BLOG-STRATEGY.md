@@ -197,7 +197,7 @@ Powiązane: wszystkie strony usług + kontakt. Ten klaster domyka lejek i wspier
 ### Miesiąc 1 — Fundament (Klaster 1)
 - [ ] Napisz **pillar Klastra 1** („Organizacja przestrzeni przed remontem") i podlinkuj istniejący artykuł jako spoke.
 - [ ] Opublikuj spoke 3 („Cargo czy szuflady") — wysoki potencjał cytowań AI.
-- [ ] Załóż **Google Business Profile** (Warszawa) + zbierz pierwsze opinie → dopiero wtedy przywróć `aggregateRating` w schemie (patrz audyt SEO).
+- [ ] Załóż **Google Business Profile** (Warszawa) + zbierz pierwsze opinie — wartość: local pack / Maps. **Nie przywracaj `aggregateRating` w schemie**: opinii z GBP nie wolno kopiować do własnego markupu (muszą być first-party), a nawet własne opinie o sobie na `LocalBusiness`/`ProfessionalService` Google ignoruje jako "self-serving" (od 09.2019 brak gwiazdek w SERP). Testimonials na stronie pokazuj bez ratingu w schemie.
 - [ ] Ustaw monitoring 10–15 zapytań w ChatGPT/Perplexity/AI Overviews.
 
 ### Miesiąc 2 — Ekspansja (Klaster 2)
@@ -229,5 +229,5 @@ Powiązane: wszystkie strony usług + kontakt. Ten klaster domyka lejek i wspier
 4. `/blog write` — pierwszy nowy artykuł (spoke „Cargo czy szuflady").
 5. `/blog calendar` — kalendarz redakcyjny na miesiąc 1.
 
-> Powiązane: `ministerstwoporzadku.pl-audit/` (audyt SEO) — napraw globalny wyciek `FAQPage` i przywróć `aggregateRating` dopiero po zebraniu realnych opinii z GBP.
+> Powiązane: `ministerstwoporzadku.pl-audit/` (audyt SEO) — napraw globalny wyciek `FAQPage`. `aggregateRating` pozostaje usunięte **na stałe** (self-serving reviews — Google nie pokaże gwiazdek dla `LocalBusiness`, a kopiowanie opinii z GBP do schemy łamie politykę review snippet).
 ```
